@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { Board } from "../entities/Board";
 
 const WIDTH = 1000;
 const HEIGHT = 800;
@@ -16,20 +17,16 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.grid = this.add
-      .grid(
-        GRID_WIDTH / 2,
-        GRID_HEIGHT / 2,
-        GRID_WIDTH,
-        GRID_HEIGHT,
-        CELL_WIDTH,
-        CELL_HEIGHT,
-        0xfbecd0
-      )
-      .setAltFillStyle(0xf1d6b7)
-      .setOutlineStyle();
+    this.board = this.add.board({
+      x: GRID_WIDTH / 2,
+      y: GRID_HEIGHT / 2,
+      width: GRID_WIDTH,
+      height: GRID_HEIGHT,
+      cellWidth: CELL_WIDTH,
+      cellHeight: CELL_HEIGHT,
+      fillColor: 0xfbecd0,
+    });
 
-    console.log(this.add);
     this.star = this.add.star(
       50 * SCALE,
       50 * SCALE,
@@ -44,8 +41,8 @@ export class MainScene extends Phaser.Scene {
       this.star.y = Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
     }
 
-    this.grid.setInteractive();
-    this.grid.on("pointerdown", moveStar.bind(this));
+    this.board.setInteractive();
+    this.board.on("pointerdown", moveStar.bind(this));
   }
 
   update() {}
