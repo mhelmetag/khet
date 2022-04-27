@@ -1,0 +1,9 @@
+export const WIDTH = 1000;
+export const HEIGHT = 800;
+export const SCALE = 0.8;
+export const COLUMNS = 10;
+export const ROWS = 8;
+export const GRID_WIDTH = WIDTH * SCALE;
+export const GRID_HEIGHT = HEIGHT * SCALE;
+export const CELL_WIDTH = GRID_WIDTH / COLUMNS;
+export const CELL_HEIGHT = GRID_HEIGHT / ROWS;

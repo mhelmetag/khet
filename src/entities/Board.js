@@ -1,4 +1,5 @@
 import { GameObjects, Plugins } from "phaser";
+import { GRID_HEIGHT, GRID_WIDTH, CELL_WIDTH, CELL_HEIGHT } from "../constants";
 
 export class BoardPlugin extends Plugins.BasePlugin {
   constructor(pluginManager) {
@@ -14,11 +15,18 @@ export class BoardPlugin extends Plugins.BasePlugin {
 }
 
 export class Board extends GameObjects.Grid {
-  constructor(
-    scene,
-    { x, y, width, height, cellWidth, cellHeight, fillColor }
-  ) {
-    super(scene, x, y, width, height, cellWidth, cellHeight, fillColor);
+  constructor(scene) {
+    super(
+      scene,
+      GRID_WIDTH / 2,
+      GRID_HEIGHT / 2,
+      GRID_WIDTH,
+      GRID_HEIGHT,
+      CELL_WIDTH,
+      CELL_HEIGHT,
+      0xfbecd0
+    );
     this.setAltFillStyle(0xf1d6b7).setOutlineStyle();
+    this.setInteractive();
   }
 }
