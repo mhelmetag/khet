@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { Piece } from "../entities/Player";
+import { Piece } from "../entities/Piece";
 
 export class MainScene extends Phaser.Scene {
   constructor(config) {
