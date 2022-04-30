@@ -34,8 +34,8 @@ export class Piece {
     this.star.fillColor = SELECTED_COLOR;
     this.potentialMovesGrid = new GameObjects.Grid(
       this.scene,
-      this.x,
-      this.y,
+      this.star.x,
+      this.star.y,
       3 * CELL_WIDTH,
       3 * CELL_HEIGHT,
       CELL_WIDTH,
