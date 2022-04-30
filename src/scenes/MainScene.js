@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { Board } from "../entities/Board";
-import { Piece } from "../entities/Piece";
+import { Djed } from "../entities/Djed";
+import { Pharaoh } from "../entities/Pharaoh";
+import { SCALE } from "../constants";
 
 export class MainScene extends Phaser.Scene {
   constructor(config) {
@@ -10,10 +12,14 @@ export class MainScene extends Phaser.Scene {
 
   create() {
     this.board = new Board(this);
-    this.piece = new Piece(this);
+    this.pharaoh = new Pharaoh({ scene: this, x: 50 * SCALE, y: 50 * SCALE });
+    this.djed = new Djed({ scene: this, x: 150 * SCALE, y: 150 * SCALE });
 
-    this.piece.onPointerDown(() => {
-      this.selectedPiece = this.piece;
+    this.pharaoh.onPointerDown(() => {
+      this.selectedPiece = this.pharaoh;
+    });
+    this.djed.onPointerDown(() => {
+      this.selectedPiece = this.pharaoh;
     });
   }
 
