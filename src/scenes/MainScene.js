@@ -11,7 +11,12 @@ export class MainScene extends Phaser.Scene {
 
     this.piece = new Piece(this);
 
+    debugger;
     this.board.on("pointerdown", this.piece.moveXY);
+    this.board.on("hover", (e) => {
+      console.log("hovered", e);
+    });
+    this.board.on("");
   }
 
   update() {}
