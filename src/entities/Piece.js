@@ -47,6 +47,11 @@ export class Piece {
         0x0000ff,
         0.3
       );
+      this.potentialMovesGrid.setInteractive();
+      this.potentialMovesGrid.on("pointerdown", ({ x, y }) => {
+        this.moveXY({ x, y });
+        this.unselect();
+      });
       this.scene.sys.displayList.add(this.potentialMovesGrid);
     }
   };

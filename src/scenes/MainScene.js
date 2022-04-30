@@ -15,14 +15,6 @@ export class MainScene extends Phaser.Scene {
     this.piece.onPointerDown(() => {
       this.selectedPiece = this.piece;
     });
-
-    this.board.onPointerDown(({ x, y }) => {
-      if (this.selectedPiece !== null) {
-        this.piece.moveXY({ x, y });
-        this.piece.unselect();
-        this.selectedPiece = null;
-      }
-    });
   }
 
   update() {}
