@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { Board } from "../entities/Board";
 import { Piece } from "../entities/Piece";
 
 export class MainScene extends Phaser.Scene {
@@ -7,16 +8,10 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.board = this.add.board();
-
+    this.board = new Board(this);
     this.piece = new Piece(this);
 
-    debugger;
-    this.board.on("pointerdown", this.piece.moveXY);
-    this.board.on("hover", (e) => {
-      console.log("hovered", e);
-    });
-    this.board.on("");
+    this.board.onPointerDown(this.piece.moveXY);
   }
 
   update() {}

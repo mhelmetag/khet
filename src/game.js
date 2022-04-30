@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import { MainScene } from "./scenes/MainScene";
-import { BoardPlugin } from "./entities/Board";
 
 const WIDTH = 1000;
 const HEIGHT = 800;
@@ -17,9 +16,9 @@ const config = {
       gravity: { y: 200 },
     },
   },
-  plugins: {
-    global: [{ key: "BoardPlugin", plugin: BoardPlugin, start: true }],
-  },
+  // plugins: {
+  //   global: [{ key: "BoardPlugin", plugin: BoardPlugin, start: true }],
+  // },
   scene: [MainScene],
 };
 
