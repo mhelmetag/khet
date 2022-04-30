@@ -21,6 +21,7 @@ export class Piece {
     scene.sys.displayList.add(this.star);
 
     this.potentialMovesGrid = null;
+    this.selected = false;
   }
 
   onPointerDown = (callback) => {
@@ -31,22 +32,27 @@ export class Piece {
   };
 
   select = () => {
-    this.star.fillColor = SELECTED_COLOR;
-    this.potentialMovesGrid = new GameObjects.Grid(
-      this.scene,
-      this.star.x,
-      this.star.y,
-      3 * CELL_WIDTH,
-      3 * CELL_HEIGHT,
-      CELL_WIDTH,
-      CELL_HEIGHT,
-      0x0000ff,
-      0.3
-    );
-    this.scene.sys.displayList.add(this.potentialMovesGrid);
+    if (!this.selected) {
+      this.selected = true;
+      this.star.fillColor = SELECTED_COLOR;
+
+      this.potentialMovesGrid = new GameObjects.Grid(
+        this.scene,
+        this.star.x,
+        this.star.y,
+        3 * CELL_WIDTH,
+        3 * CELL_HEIGHT,
+        CELL_WIDTH,
+        CELL_HEIGHT,
+        0x0000ff,
+        0.3
+      );
+      this.scene.sys.displayList.add(this.potentialMovesGrid);
+    }
   };
 
   unselect = () => {
+    this.selected = false;
     this.star.fillColor = UNSELECTED_COLOR;
     this.potentialMovesGrid.destroy();
   };
