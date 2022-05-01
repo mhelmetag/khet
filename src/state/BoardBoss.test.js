@@ -3,7 +3,7 @@ import BoardBoss, {
   DJED,
   EMPTY,
   SELECTED,
-  PHAROH,
+  PHARAOH,
   InvalidMoveError,
 } from "./BoardBoss";
 
@@ -14,61 +14,61 @@ it("builds an empty 10 x 8 board", () => {
   expect(boardBoss.board[0].length).toEqual(COLUMNS);
 });
 
-it("can create a pharoh at 2,3", () => {
+it("can create a pharaoh at 2,3", () => {
   let boardBoss = new BoardBoss();
-  boardBoss.writeSpace(2, 3, PHAROH);
+  boardBoss.writeSpace(2, 3, PHARAOH);
 
-  expect(boardBoss.readSpace(2, 3)).toEqual(PHAROH);
+  expect(boardBoss.readSpace(2, 3)).toEqual(PHARAOH);
 });
 
-it("can select pharoh", () => {
+it("can select pharaoh", () => {
   let boardBoss = new BoardBoss();
-  boardBoss.writeSpace(2, 3, PHAROH);
+  boardBoss.writeSpace(2, 3, PHARAOH);
 
   boardBoss.selectPiece(2, 3);
 
-  expect(boardBoss.readSpace(2, 3)).toEqual(`${SELECTED}${PHAROH}`);
+  expect(boardBoss.readSpace(2, 3)).toEqual(`${SELECTED}${PHARAOH}`);
 });
 
-it("can deselect pharoh", () => {
+it("can deselect pharaoh", () => {
   let boardBoss = new BoardBoss();
-  boardBoss.writeSpace(2, 3, `${SELECTED}${PHAROH}`);
+  boardBoss.writeSpace(2, 3, `${SELECTED}${PHARAOH}`);
 
   boardBoss.deselectPiece(2, 3);
 
-  expect(boardBoss.readSpace(2, 3)).toEqual(PHAROH);
+  expect(boardBoss.readSpace(2, 3)).toEqual(PHARAOH);
 });
 
-it("can move pharoh from 2,3 to 3,3", () => {
+it("can move pharaoh from 2,3 to 3,3", () => {
   let boardBoss = new BoardBoss();
-  boardBoss.writeSpace(2, 3, PHAROH);
+  boardBoss.writeSpace(2, 3, PHARAOH);
 
   boardBoss.selectPiece(2, 3);
   boardBoss.movePiece(2, 3, 3, 3);
 
   expect(boardBoss.readSpace(2, 3)).toEqual(EMPTY);
-  expect(boardBoss.readSpace(3, 3)).toEqual(PHAROH);
+  expect(boardBoss.readSpace(3, 3)).toEqual(PHARAOH);
 });
 
-it("can't move pharoh to where djed is", () => {
+it("can't move pharaoh to where djed is", () => {
   let boardBoss = new BoardBoss();
 
-  boardBoss.writeSpace(2, 3, PHAROH);
+  boardBoss.writeSpace(2, 3, PHARAOH);
   boardBoss.writeSpace(3, 3, DJED);
 
   boardBoss.selectPiece(2, 3);
   expect(() => boardBoss.movePiece(2, 3, 3, 3)).toThrow(InvalidMoveError);
 });
 
-it("can move djed to where pharoh is and switch positions", () => {
+it("can move djed to where pharaoh is and switch positions", () => {
   let boardBoss = new BoardBoss();
 
   boardBoss.writeSpace(3, 3, DJED);
-  boardBoss.writeSpace(2, 3, PHAROH);
+  boardBoss.writeSpace(2, 3, PHARAOH);
 
   boardBoss.selectPiece(3, 3);
   boardBoss.movePiece(3, 3, 2, 3);
 
-  expect(boardBoss.readSpace(3, 3)).toEqual(PHAROH);
+  expect(boardBoss.readSpace(3, 3)).toEqual(PHARAOH);
   expect(boardBoss.readSpace(2, 3)).toEqual(DJED);
 });

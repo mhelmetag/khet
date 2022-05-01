@@ -3,10 +3,10 @@ import { ROWS, COLUMNS } from "../constants";
 export const SELECTED = "^";
 
 export const EMPTY = "";
-export const PHAROH = "P";
-export const DJED = "D";
-export const OBELISK = "O";
-export const PYRAMID = "P";
+export const PHARAOH = "pharaoh";
+export const DJED = "djed";
+export const OBELISK = "obelisk";
+export const PYRAMID = "pyramid";
 
 export class InvalidSelectionError extends Error {
   constructor(message) {
@@ -44,9 +44,7 @@ export default class BoardBoss {
   }
 
   writeSpace(row, column, value) {
-    let newBoard = this.board;
-    newBoard[row][column] = value;
-    this.board = newBoard;
+    this.board[row][column] = value;
   }
 
   readSpace(row, column) {
