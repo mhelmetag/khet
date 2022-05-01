@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT, SCALE } from "../constants";
+import { CELL_WIDTH, CELL_HEIGHT } from "../constants";
 
 const SELECTED_COLOR = 0x00ff00;
 const UNSELECTED_COLOR = 0xff0000;
