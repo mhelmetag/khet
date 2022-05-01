@@ -11,7 +11,7 @@ export const PYRAMID = "P";
 export class InvalidSelectionError extends Error {
   constructor(message) {
     super(message);
-    this.name = "InvalidMoveError";
+    this.name = "InvalidSelectionError";
   }
 }
 
