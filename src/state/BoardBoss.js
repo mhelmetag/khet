@@ -86,7 +86,6 @@ export default class BoardBoss {
     if (piece == EMPTY) {
       throw (InvalidSelectionError, `${currentRow},${currentColumn} is empty`);
     }
-
     if (!piece.includes(SELECTED)) {
       throw (
         (InvalidMoveError, `${currentRow},${currentColumn} must be selected`)
