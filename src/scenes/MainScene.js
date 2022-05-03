@@ -19,7 +19,7 @@ export class MainScene extends Phaser.Scene {
       this.selectedPiece = this.pharaoh;
     });
     this.djed.onPointerDown(() => {
-      this.selectedPiece = this.pharaoh;
+      this.selectedPiece = this.djed;
     });
   }
 

@@ -40,6 +40,7 @@ export default class BoardBoss {
       return emptyBoard;
     };
 
+    this.selectedPiece = null;
     this.board = buildEmptyBoard();
   }
 
@@ -60,7 +61,12 @@ export default class BoardBoss {
     if (piece.includes(SELECTED)) {
       throw (InvalidSelectionError, `${row},${column} is already selected`);
     }
+    // Swap piece
+    if (this.selectedPiece) {
+      this.selectedPiece = null;
+    }
 
+    this.selectedPiece = piece;
     this.writeSpace(row, column, `${SELECTED}${piece}`);
   }
 
@@ -74,6 +80,7 @@ export default class BoardBoss {
       throw (InvalidSelectionError, `${row},${column} is not selected`);
     }
 
+    this.selectedPiece = null;
     piece = piece.replace(SELECTED, "");
     this.writeSpace(row, column, piece);
   }

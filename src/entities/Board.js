@@ -11,9 +11,11 @@ export class Board {
       GRID_HEIGHT,
       CELL_WIDTH,
       CELL_HEIGHT,
-      0xfbecd0
+      0xfbecd0,
+      1,
+      0xf1d6b7,
+      1
     );
-    this.grid.setAltFillStyle(0xf1d6b7).setOutlineStyle();
     this.grid.setInteractive();
     scene.sys.displayList.add(this.grid);
   }
