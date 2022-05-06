@@ -1,9 +1,18 @@
 import Phaser from "phaser";
 import { Board } from "../entities/Board";
-import { Djed } from "../entities/Djed";
+import { Scarab } from "../entities/Scarab";
 import { Pharaoh } from "../entities/Pharaoh";
-import BoardBoss, { DJED, EMPTY, PHARAOH } from "../state/BoardBoss";
+import BoardBoss, {
+  SCARAB,
+  EMPTY,
+  ANUBIS,
+  PHARAOH,
+  PYRAMID,
+  TYPES,
+} from "../state/BoardBoss";
 import { xAndYFromGrid } from "../helpers/boardHelpers";
+import { Pyramid } from "../entities/Pyramid";
+import { Anubis } from "../entities/Anubis";
 
 export class MainScene extends Phaser.Scene {
   constructor(config) {
@@ -21,10 +30,16 @@ export class MainScene extends Phaser.Scene {
       switch (type) {
         case PHARAOH:
           return new Pharaoh(options);
-        case DJED:
-          return new Djed(options);
+        case SCARAB:
+          return new Scarab(options);
+        case PYRAMID:
+          return new Pyramid(options);
+        case ANUBIS:
+          return new Anubis(options);
         default:
-          throw new TypeError(`${type} is an invalid type (pharoah, djed)`);
+          throw new TypeError(
+            `${type} is an invalid type (one of ${TYPES.join(", ")})`
+          );
       }
     };
 

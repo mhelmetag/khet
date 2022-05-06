@@ -4,9 +4,10 @@ export const SELECTED = "^";
 
 export const EMPTY = "";
 export const PHARAOH = "pharaoh";
-export const DJED = "djed";
-export const OBELISK = "obelisk";
+export const SCARAB = "scarab";
+export const ANUBIS = "anubis";
 export const PYRAMID = "pyramid";
+export const TYPES = [PHARAOH, SCARAB, ANUBIS, PYRAMID];
 
 export class InvalidSelectionError extends Error {
   constructor(message) {
@@ -42,12 +43,13 @@ export default class BoardBoss {
     if (piece === EMPTY) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
+    if (this.selectedPiece) {
+      throw new InvalidSelectionError(
+        `${this.selectedPiece} is already selected`
+      );
+    }
     if (piece.includes(SELECTED)) {
       throw new InvalidSelectionError(`${row},${column} is already selected`);
-    }
-    // Swap piece
-    if (this.selectedPiece) {
-      this.selectedPiece = null;
     }
 
     this.selectedPiece = piece;
@@ -85,8 +87,8 @@ export default class BoardBoss {
 
     const newSpace = this.readSpace(newRow, newColumn);
 
-    // Only Djed's can switch with another piece
-    if (newSpace !== EMPTY && !piece.includes(DJED)) {
+    // Only Scarab's can switch with another piece
+    if (newSpace !== EMPTY && !piece.includes(SCARAB)) {
       throw new InvalidMoveError(
         `${newRow},${newColumn} is not an empty space`
       );

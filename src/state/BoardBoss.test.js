@@ -1,6 +1,6 @@
 import { COLUMNS, ROWS } from "../constants";
 import BoardBoss, {
-  DJED,
+  SCARAB,
   EMPTY,
   SELECTED,
   PHARAOH,
@@ -50,25 +50,25 @@ it("can move pharaoh from 2,3 to 3,3", () => {
   expect(boardBoss.readSpace(3, 3)).toEqual(PHARAOH);
 });
 
-it("can't move pharaoh to where djed is", () => {
+it("can't move pharaoh to where scarab is", () => {
   let boardBoss = new BoardBoss();
 
   boardBoss.writeSpace(2, 3, PHARAOH);
-  boardBoss.writeSpace(3, 3, DJED);
+  boardBoss.writeSpace(3, 3, SCARAB);
 
   boardBoss.selectPiece(2, 3);
   expect(() => boardBoss.movePiece(2, 3, 3, 3)).toThrow(InvalidMoveError);
 });
 
-it("can move djed to where pharaoh is and switch positions", () => {
+it("can move scarab to where pharaoh is and switch positions", () => {
   let boardBoss = new BoardBoss();
 
-  boardBoss.writeSpace(3, 3, DJED);
+  boardBoss.writeSpace(3, 3, SCARAB);
   boardBoss.writeSpace(2, 3, PHARAOH);
 
   boardBoss.selectPiece(3, 3);
   boardBoss.movePiece(3, 3, 2, 3);
 
   expect(boardBoss.readSpace(3, 3)).toEqual(PHARAOH);
-  expect(boardBoss.readSpace(2, 3)).toEqual(DJED);
+  expect(boardBoss.readSpace(2, 3)).toEqual(SCARAB);
 });

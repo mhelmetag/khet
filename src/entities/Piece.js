@@ -1,22 +1,23 @@
 import { GameObjects } from "phaser";
 import { CELL_WIDTH, CELL_HEIGHT } from "../constants";
+import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 
 const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
-
+const PIECE_COLOR = 0xc0392b;
 export class Piece {
   constructor(params) {
     this.scene = params.scene;
     this.x = params.x;
     this.y = params.y;
     this.boardBoss = params.boardBoss;
+
     this.potentialMovesGrid = null;
     this.selected = false;
+    this.color = PIECE_COLOR;
 
     // Overrides
     this.graphic = null;
-    this.color = null;
-    this.selectedColor = null;
   }
 
   select = () => {
@@ -25,13 +26,10 @@ export class Piece {
       const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
       this.boardBoss.selectPiece(row, column);
 
-      console.log(this.boardBoss.board);
-
       // Internal state update
       this.selected = true;
 
       // Graphic update
-      this.graphic.fillColor = this.selectedColor;
       this.potentialMovesGrid = new GameObjects.Grid(
         this.scene,
         this.graphic.x,
@@ -41,13 +39,15 @@ export class Piece {
         CELL_WIDTH,
         CELL_HEIGHT,
         POSSIBLE_MOVES_GRID_COLOR,
-        0.3
+        0.2,
+        BOARD_BOARDER_COLOR
       );
       this.potentialMovesGrid.setInteractive();
       this.potentialMovesGrid.on("pointerdown", ({ x, y }) => {
         this.moveXY({ x, y });
       });
       this.scene.sys.displayList.add(this.potentialMovesGrid);
+      this.scene.children.bringToTop(this.graphic);
     }
   };
 
@@ -60,8 +60,6 @@ export class Piece {
     const [newColumn, newRow] = gridFromXAndY([x, y]);
     this.boardBoss.movePiece(currentRow, currentColumn, newRow, newColumn);
 
-    console.log(this.boardBoss.board);
-
     // Internal state update
     this.selected = false;
 
@@ -70,6 +68,5 @@ export class Piece {
     this.graphic.x = Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
     this.graphic.y =
       Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
-    this.graphic.fillColor = this.color;
   };
 }
