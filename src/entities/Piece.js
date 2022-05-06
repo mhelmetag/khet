@@ -8,9 +8,9 @@ const PIECE_COLOR = 0xc0392b;
 export class Piece {
   constructor(params) {
     this.scene = params.scene;
+    this.boardBoss = params.boardBoss;
     this.x = params.x;
     this.y = params.y;
-    this.boardBoss = params.boardBoss;
 
     this.potentialMovesGrid = null;
     this.selected = false;
@@ -20,8 +20,20 @@ export class Piece {
     this.graphic = null;
   }
 
-  select = () => {
-    if (!this.selected) {
+  click = () => {
+    const deselect = () => {
+      // Board state update
+      const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+      this.boardBoss.deselectPiece(row, column);
+
+      // Internal state update
+      this.selected = false;
+
+      // Graphic update
+      this.potentialMovesGrid.destroy();
+    };
+
+    const select = () => {
       // Board state update
       const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
       this.boardBoss.selectPiece(row, column);
@@ -44,29 +56,32 @@ export class Piece {
       );
       this.potentialMovesGrid.setInteractive();
       this.potentialMovesGrid.on("pointerdown", ({ x, y }) => {
-        this.moveXY({ x, y });
+        // Board state update
+        const [currentColumn, currentRow] = gridFromXAndY([
+          this.graphic.x,
+          this.graphic.y,
+        ]);
+        const [newColumn, newRow] = gridFromXAndY([x, y]);
+        this.boardBoss.movePiece(currentRow, currentColumn, newRow, newColumn);
+
+        // Internal state update
+        this.selected = false;
+
+        // Graphic update
+        this.potentialMovesGrid.destroy();
+        this.graphic.x =
+          Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
+        this.graphic.y =
+          Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
       });
       this.scene.sys.displayList.add(this.potentialMovesGrid);
       this.scene.children.bringToTop(this.graphic);
+    };
+
+    if (this.selected) {
+      deselect();
+    } else {
+      select();
     }
-  };
-
-  moveXY = ({ x, y }) => {
-    // Board state update
-    const [currentColumn, currentRow] = gridFromXAndY([
-      this.graphic.x,
-      this.graphic.y,
-    ]);
-    const [newColumn, newRow] = gridFromXAndY([x, y]);
-    this.boardBoss.movePiece(currentRow, currentColumn, newRow, newColumn);
-
-    // Internal state update
-    this.selected = false;
-
-    // Graphic update
-    this.potentialMovesGrid.destroy();
-    this.graphic.x = Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
-    this.graphic.y =
-      Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
   };
 }

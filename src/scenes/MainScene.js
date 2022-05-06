@@ -56,7 +56,7 @@ export class MainScene extends Phaser.Scene {
 
     this.pieces.forEach((piece) => {
       piece.graphic.on("pointerdown", () => {
-        piece.select();
+        piece.click();
       });
     });
   }
