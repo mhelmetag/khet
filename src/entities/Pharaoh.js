@@ -1,6 +1,10 @@
 import { GameObjects } from "phaser";
 import { Piece } from "./Piece";
-import { CELL_WIDTH, UNSELECTED_COLOR } from "../constants";
+
+import { CELL_WIDTH } from "../constants";
+
+const COLOR = 0xaf7ac5;
+const SELECTED_COLOR = 0x9b59b6;
 
 export class Pharaoh extends Piece {
   constructor(params) {
@@ -10,11 +14,15 @@ export class Pharaoh extends Piece {
       params.scene,
       this.x,
       this.y,
-      4,
-      CELL_WIDTH / 2,
-      CELL_WIDTH / 4,
-      UNSELECTED_COLOR
+      5,
+      CELL_WIDTH / 3,
+      CELL_WIDTH / 5,
+      COLOR
     );
+
+    this.color = COLOR;
+    this.selectedColor = SELECTED_COLOR;
+
     this.graphic.setInteractive();
     params.scene.sys.displayList.add(this.graphic);
   }

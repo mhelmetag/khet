@@ -3,23 +3,47 @@ import { Board } from "../entities/Board";
 import { Djed } from "../entities/Djed";
 import { Pharaoh } from "../entities/Pharaoh";
 import { SCALE } from "../constants";
+import BoardBoss, { DJED, EMPTY, PHARAOH } from "../state/BoardBoss";
+import { xAndYFromGrid } from "../helpers/boardHelpers";
 
 export class MainScene extends Phaser.Scene {
   constructor(config) {
     super({ ...config, key: "MainScene" });
-    this.selectedPiece = null;
   }
 
   create() {
+    this.boardBoss = new BoardBoss();
     this.board = new Board(this);
-    this.pharaoh = new Pharaoh({ scene: this, x: 50 * SCALE, y: 50 * SCALE });
-    this.djed = new Djed({ scene: this, x: 150 * SCALE, y: 150 * SCALE });
 
-    this.pharaoh.onPointerDown(() => {
-      this.selectedPiece = this.pharaoh;
+    const pieceConstructor = (row, column, type) => {
+      const [x, y] = xAndYFromGrid([row, column]);
+      const options = { scene: this, boardBoss: this.boardBoss, x: x, y: y };
+
+      switch (type) {
+        case PHARAOH:
+          return new Pharaoh(options);
+        case DJED:
+          return new Djed(options);
+        default:
+          throw (TypeError, `${type} is an invalid type (pharoah, djed)`);
+      }
+    };
+
+    this.pieces = [];
+    this.boardBoss.board.forEach((row, rowIndex) => {
+      row.forEach((column, columnIndex) => {
+        if (column != EMPTY) {
+          const piece = pieceConstructor(rowIndex, columnIndex, column);
+
+          this.pieces.push(piece);
+        }
+      });
     });
-    this.djed.onPointerDown(() => {
-      this.selectedPiece = this.djed;
+
+    this.pieces.forEach((piece) => {
+      piece.graphic.on("pointerdown", () => {
+        piece.select();
+      });
     });
   }
 

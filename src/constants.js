@@ -7,5 +7,3 @@ export const GRID_WIDTH = WIDTH * SCALE;
 export const GRID_HEIGHT = HEIGHT * SCALE;
 export const CELL_WIDTH = GRID_WIDTH / COLUMNS;
 export const CELL_HEIGHT = GRID_HEIGHT / ROWS;
-export const SELECTED_COLOR = 0x00ff00;
-export const UNSELECTED_COLOR = 0xff0000;

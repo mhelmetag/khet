@@ -1,4 +1,4 @@
-import { ROWS, COLUMNS } from "../constants";
+import BoardConstructor from "./BoardConstructor";
 
 export const SELECTED = "^";
 
@@ -23,25 +23,9 @@ export class InvalidMoveError extends Error {
 }
 
 export default class BoardBoss {
-  constructor() {
-    const buildEmptyBoard = () => {
-      let emptyBoard = [];
-
-      for (let r = 0; r < ROWS; r++) {
-        let newRow = [];
-
-        for (let c = 0; c < COLUMNS; c++) {
-          newRow.push(EMPTY);
-        }
-
-        emptyBoard.push(newRow);
-      }
-
-      return emptyBoard;
-    };
-
+  constructor(gameType = "classic") {
     this.selectedPiece = null;
-    this.board = buildEmptyBoard();
+    this.board = new BoardConstructor(gameType).board;
   }
 
   writeSpace(row, column, value) {

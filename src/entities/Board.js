@@ -16,11 +16,6 @@ export class Board {
       0xf1d6b7,
       1
     );
-    this.grid.setInteractive();
     scene.sys.displayList.add(this.grid);
   }
-
-  onPointerDown = (cb) => {
-    this.grid.on("pointerdown", cb);
-  };
 }
