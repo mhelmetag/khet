@@ -29,7 +29,7 @@ export default class BoardConstructor {
 
         break;
       default:
-        throw (TypeError, `${gameType} is not a valid game type (classic)`);
+        throw new TypeError(`${gameType} is not a valid game type (classic)`);
     }
   }
 }
