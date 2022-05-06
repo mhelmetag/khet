@@ -29,9 +29,9 @@ export class Piece {
 
       // Internal state update
       this.selected = true;
-      this.graphic.fillColor = this.selectedColor;
 
       // Graphic update
+      this.graphic.fillColor = this.selectedColor;
       this.potentialMovesGrid = new GameObjects.Grid(
         this.scene,
         this.graphic.x,
@@ -62,11 +62,14 @@ export class Piece {
 
     console.log(this.boardBoss.board);
 
+    // Internal state update
+    this.selected = false;
+
     // Graphic update
+    this.potentialMovesGrid.destroy();
     this.graphic.x = Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
     this.graphic.y =
       Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
     this.graphic.fillColor = this.color;
-    this.potentialMovesGrid.destroy();
   };
 }
