@@ -39,11 +39,11 @@ export default class BoardBoss {
   selectPiece(row, column) {
     const piece = this.readSpace(row, column);
 
-    if (piece == EMPTY) {
-      throw (InvalidSelectionError, `${row},${column} is empty`);
+    if (piece === EMPTY) {
+      throw new InvalidSelectionError(`${row},${column} is empty`);
     }
     if (piece.includes(SELECTED)) {
-      throw (InvalidSelectionError, `${row},${column} is already selected`);
+      throw new InvalidSelectionError(`${row},${column} is already selected`);
     }
     // Swap piece
     if (this.selectedPiece) {
@@ -57,11 +57,11 @@ export default class BoardBoss {
   deselectPiece(row, column) {
     let piece = this.readSpace(row, column);
 
-    if (piece == EMPTY) {
-      throw (InvalidSelectionError, `${row},${column} is empty`);
+    if (piece === EMPTY) {
+      throw new InvalidSelectionError(`${row},${column} is empty`);
     }
     if (!piece.includes(SELECTED)) {
-      throw (InvalidSelectionError, `${row},${column} is not selected`);
+      throw new InvalidSelectionError(`${row},${column} is not selected`);
     }
 
     this.selectedPiece = null;
@@ -72,19 +72,21 @@ export default class BoardBoss {
   movePiece(currentRow, currentColumn, newRow, newColumn) {
     const piece = this.readSpace(currentRow, currentColumn);
 
-    if (piece == EMPTY) {
-      throw (InvalidSelectionError, `${currentRow},${currentColumn} is empty`);
+    if (piece === EMPTY) {
+      throw new InvalidSelectionError(
+        `${currentRow},${currentColumn} is empty`
+      );
     }
     if (!piece.includes(SELECTED)) {
-      throw (
-        (InvalidMoveError, `${currentRow},${currentColumn} must be selected`)
+      throw new InvalidMoveError(
+        `${currentRow},${currentColumn} must be selected`
       );
     }
 
     const newSpace = this.readSpace(newRow, newColumn);
 
     // Only Djed's can switch with another piece
-    if (newSpace != EMPTY && !piece.includes(DJED)) {
+    if (newSpace !== EMPTY && !piece.includes(DJED)) {
       throw new InvalidMoveError(
         `${newRow},${newColumn} is not an empty space`
       );

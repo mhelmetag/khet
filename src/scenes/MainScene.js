@@ -2,7 +2,6 @@ import Phaser from "phaser";
 import { Board } from "../entities/Board";
 import { Djed } from "../entities/Djed";
 import { Pharaoh } from "../entities/Pharaoh";
-import { SCALE } from "../constants";
 import BoardBoss, { DJED, EMPTY, PHARAOH } from "../state/BoardBoss";
 import { xAndYFromGrid } from "../helpers/boardHelpers";
 
@@ -25,14 +24,14 @@ export class MainScene extends Phaser.Scene {
         case DJED:
           return new Djed(options);
         default:
-          throw (TypeError, `${type} is an invalid type (pharoah, djed)`);
+          throw new TypeError(`${type} is an invalid type (pharoah, djed)`);
       }
     };
 
     this.pieces = [];
     this.boardBoss.board.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => {
-        if (column != EMPTY) {
+        if (column !== EMPTY) {
           const piece = pieceConstructor(rowIndex, columnIndex, column);
 
           this.pieces.push(piece);

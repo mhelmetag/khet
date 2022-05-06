@@ -46,16 +46,9 @@ export class Piece {
       this.potentialMovesGrid.setInteractive();
       this.potentialMovesGrid.on("pointerdown", ({ x, y }) => {
         this.moveXY({ x, y });
-        this.deselect();
       });
       this.scene.sys.displayList.add(this.potentialMovesGrid);
     }
-  };
-
-  deselect = () => {
-    // Graphic update
-    this.graphic.fillColor = this.color;
-    this.potentialMovesGrid.destroy();
   };
 
   moveXY = ({ x, y }) => {
@@ -73,5 +66,7 @@ export class Piece {
     this.graphic.x = Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
     this.graphic.y =
       Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
+    this.graphic.fillColor = this.color;
+    this.potentialMovesGrid.destroy();
   };
 }
