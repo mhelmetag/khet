@@ -16,9 +16,6 @@ const config = {
       gravity: { y: 200 },
     },
   },
-  // plugins: {
-  //   global: [{ key: "BoardPlugin", plugin: BoardPlugin, start: true }],
-  // },
   scene: [MainScene],
 };
 
