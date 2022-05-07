@@ -24,7 +24,7 @@ export class Piece {
     const deselect = () => {
       // Board state update
       const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
-      this.boardBoss.deselectPiece(row, column);
+      this.boardBoss.deselectPiece([row, column]);
 
       // Internal state update
       this.selected = false;
@@ -36,7 +36,7 @@ export class Piece {
     const select = () => {
       // Board state update
       const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
-      this.boardBoss.selectPiece(row, column);
+      this.boardBoss.selectPiece([row, column]);
 
       // Internal state update
       this.selected = true;
@@ -62,7 +62,10 @@ export class Piece {
           this.graphic.y,
         ]);
         const [newColumn, newRow] = gridFromXAndY([x, y]);
-        this.boardBoss.movePiece(currentRow, currentColumn, newRow, newColumn);
+        this.boardBoss.movePiece(
+          [currentRow, currentColumn],
+          [newRow, newColumn]
+        );
 
         // Internal state update
         this.selected = false;
