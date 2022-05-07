@@ -29,16 +29,16 @@ export default class BoardBoss {
     this.board = new BoardConstructor(gameType).board;
   }
 
-  writeSpace(row, column, value) {
+  writeSpace([row, column], value) {
     this.board[row][column] = value;
   }
 
-  readSpace(row, column) {
+  readSpace([row, column]) {
     return this.board[row][column];
   }
 
-  selectPiece(row, column) {
-    const piece = this.readSpace(row, column);
+  selectPiece([row, column]) {
+    const piece = this.readSpace([row, column]);
 
     if (piece === EMPTY) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
@@ -53,11 +53,11 @@ export default class BoardBoss {
     }
 
     this.selectedPiece = piece;
-    this.writeSpace(row, column, `${SELECTED}${piece}`);
+    this.writeSpace([row, column], `${SELECTED}${piece}`);
   }
 
-  deselectPiece(row, column) {
-    let piece = this.readSpace(row, column);
+  deselectPiece([row, column]) {
+    let piece = this.readSpace([row, column]);
 
     if (piece === EMPTY) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
@@ -68,11 +68,11 @@ export default class BoardBoss {
 
     this.selectedPiece = null;
     piece = piece.replace(SELECTED, "");
-    this.writeSpace(row, column, piece);
+    this.writeSpace([row, column], piece);
   }
 
-  movePiece(currentRow, currentColumn, newRow, newColumn) {
-    const piece = this.readSpace(currentRow, currentColumn);
+  movePiece([currentRow, currentColumn], [newRow, newColumn]) {
+    const piece = this.readSpace([currentRow, currentColumn]);
 
     if (piece === EMPTY) {
       throw new InvalidSelectionError(
@@ -85,7 +85,7 @@ export default class BoardBoss {
       );
     }
 
-    const newSpace = this.readSpace(newRow, newColumn);
+    const newSpace = this.readSpace([newRow, newColumn]);
 
     // Only Scarab's can switch with another piece
     if (newSpace !== EMPTY && !piece.includes(SCARAB)) {
@@ -94,8 +94,8 @@ export default class BoardBoss {
       );
     }
 
-    this.writeSpace(currentRow, currentColumn, newSpace);
-    this.writeSpace(newRow, newColumn, piece);
-    this.deselectPiece(newRow, newColumn);
+    this.writeSpace([currentRow, currentColumn], newSpace);
+    this.writeSpace([newRow, newColumn], piece);
+    this.deselectPiece([newRow, newColumn]);
   }
 }
