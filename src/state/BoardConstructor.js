@@ -1,18 +1,6 @@
 import { ROWS, COLUMNS, PLAYER_ONE, PLAYER_TWO } from "../constants";
-import { SCARAB, PHARAOH, ANUBIS, PYRAMID, TYPES } from "./BoardBoss";
-
-class PieceBoss {
-  constructor(params) {
-    if (!TYPES.includes(params.type)) {
-      throw new TypeError(
-        `${params.type} is an invalid type (one of ${TYPES.join(", ")})`
-      );
-    }
-
-    this.type = params.type;
-    this.player = params.player;
-  }
-}
+import { SCARAB, PHARAOH, ANUBIS, PYRAMID } from "./BoardBoss";
+import PieceBoss from "./PieceBoss";
 
 export default class BoardConstructor {
   constructor(gameType = "classic") {
