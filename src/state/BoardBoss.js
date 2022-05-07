@@ -1,10 +1,5 @@
 import BoardConstructor from "./BoardConstructor";
 
-export const SELECTED = "^";
-export const PLAYER_ONE = "1";
-export const PLAYER_TWO = "2";
-
-export const EMPTY = "";
 export const PHARAOH = "pharaoh";
 export const SCARAB = "scarab";
 export const ANUBIS = "anubis";

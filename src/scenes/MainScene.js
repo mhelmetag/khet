@@ -4,7 +4,6 @@ import { Scarab } from "../entities/Scarab";
 import { Pharaoh } from "../entities/Pharaoh";
 import BoardBoss, {
   SCARAB,
-  EMPTY,
   ANUBIS,
   PHARAOH,
   PYRAMID,
