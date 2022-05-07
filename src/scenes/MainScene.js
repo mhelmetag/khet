@@ -23,11 +23,17 @@ export class MainScene extends Phaser.Scene {
     this.boardBoss = new BoardBoss();
     this.board = new Board(this);
 
-    const pieceConstructor = (row, column, type) => {
+    const pieceConstructor = (row, column, piece) => {
       const [x, y] = xAndYFromGrid([row, column]);
-      const options = { scene: this, boardBoss: this.boardBoss, x: x, y: y };
+      const options = {
+        scene: this,
+        boardBoss: this.boardBoss,
+        x: x,
+        y: y,
+        player: piece.player,
+      };
 
-      switch (type) {
+      switch (piece.type) {
         case PHARAOH:
           return new Pharaoh(options);
         case SCARAB:
@@ -38,16 +44,16 @@ export class MainScene extends Phaser.Scene {
           return new Anubis(options);
         default:
           throw new TypeError(
-            `${type} is an invalid type (one of ${TYPES.join(", ")})`
+            `${piece.type} is an invalid type (one of ${TYPES.join(", ")})`
           );
       }
     };
 
     this.pieces = [];
     this.boardBoss.board.forEach((row, rowIndex) => {
-      row.forEach((column, columnIndex) => {
-        if (column !== EMPTY) {
-          const piece = pieceConstructor(rowIndex, columnIndex, column);
+      row.forEach((pieceState, columnIndex) => {
+        if (pieceState !== null) {
+          const piece = pieceConstructor(rowIndex, columnIndex, pieceState);
 
           this.pieces.push(piece);
         }

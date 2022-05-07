@@ -7,3 +7,5 @@ export const GRID_WIDTH = WIDTH * SCALE;
 export const GRID_HEIGHT = HEIGHT * SCALE;
 export const CELL_WIDTH = GRID_WIDTH / COLUMNS;
 export const CELL_HEIGHT = GRID_HEIGHT / ROWS;
+export const PLAYER_ONE = "player_one";
+export const PLAYER_TWO = "player_two";
