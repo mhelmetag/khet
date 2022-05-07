@@ -27,7 +27,7 @@ export class InvalidMoveError extends Error {
 
 export default class BoardBoss {
   constructor(gameType = "classic") {
-    this.selectedPiece = null;
+    this.selectedPieceId = null;
     this.board = new BoardConstructor(gameType).board;
   }
 
@@ -45,19 +45,16 @@ export default class BoardBoss {
     if (piece === null) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
-    if (this.selectedPiece) {
+    if (this.selectedPieceId) {
       throw new InvalidSelectionError(
-        `${this.selectedPiece} is already selected`
+        `${this.selectedPieceId} is already selected`
       );
     }
     if (piece.selected) {
       throw new InvalidSelectionError(`${row},${column} is already selected`);
     }
 
-    // Could avoid storing selected on piece by giving piece an id and setting
-    // this.selectedPieceId here.
-    piece.selected = true;
-    this.selectedPiece = piece;
+    this.selectedPieceId = piece.id;
     this.writeSpace([row, column], piece);
   }
 
@@ -67,12 +64,11 @@ export default class BoardBoss {
     if (piece === null) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
-    if (!piece.selected) {
+    if (this.selectedPieceId !== piece.id) {
       throw new InvalidSelectionError(`${row},${column} is not selected`);
     }
 
-    this.selectedPiece = null;
-    piece.selected = false;
+    this.selectedPieceId = null;
     this.writeSpace([row, column], piece);
   }
 
@@ -84,7 +80,7 @@ export default class BoardBoss {
         `${currentRow},${currentColumn} is empty`
       );
     }
-    if (!piece.selected) {
+    if (this.selectedPieceId !== piece.id) {
       throw new InvalidMoveError(
         `${currentRow},${currentColumn} must be selected`
       );
