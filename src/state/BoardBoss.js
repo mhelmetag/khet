@@ -1,8 +1,5 @@
-import BoardConstructor from "./BoardConstructor";
+import buildBoard from "./buildBoard";
 
-export const SELECTED = "^";
-
-export const EMPTY = "";
 export const PHARAOH = "pharaoh";
 export const SCARAB = "scarab";
 export const ANUBIS = "anubis";
@@ -25,8 +22,8 @@ export class InvalidMoveError extends Error {
 
 export default class BoardBoss {
   constructor(gameType = "classic") {
-    this.selectedPiece = null;
-    this.board = new BoardConstructor(gameType).board;
+    this.selectedPieceId = null;
+    this.board = new buildBoard(gameType);
   }
 
   writeSpace([row, column], value) {
@@ -40,46 +37,45 @@ export default class BoardBoss {
   selectPiece([row, column]) {
     const piece = this.readSpace([row, column]);
 
-    if (piece === EMPTY) {
+    if (piece === null) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
-    if (this.selectedPiece) {
+    if (this.selectedPieceId) {
       throw new InvalidSelectionError(
-        `${this.selectedPiece} is already selected`
+        `${this.selectedPieceId} is already selected`
       );
     }
-    if (piece.includes(SELECTED)) {
+    if (piece.selected) {
       throw new InvalidSelectionError(`${row},${column} is already selected`);
     }
 
-    this.selectedPiece = piece;
-    this.writeSpace([row, column], `${SELECTED}${piece}`);
+    this.selectedPieceId = piece.id;
+    this.writeSpace([row, column], piece);
   }
 
   deselectPiece([row, column]) {
     let piece = this.readSpace([row, column]);
 
-    if (piece === EMPTY) {
+    if (piece === null) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
-    if (!piece.includes(SELECTED)) {
+    if (this.selectedPieceId !== piece.id) {
       throw new InvalidSelectionError(`${row},${column} is not selected`);
     }
 
-    this.selectedPiece = null;
-    piece = piece.replace(SELECTED, "");
+    this.selectedPieceId = null;
     this.writeSpace([row, column], piece);
   }
 
   movePiece([currentRow, currentColumn], [newRow, newColumn]) {
     const piece = this.readSpace([currentRow, currentColumn]);
 
-    if (piece === EMPTY) {
+    if (piece === null) {
       throw new InvalidSelectionError(
         `${currentRow},${currentColumn} is empty`
       );
     }
-    if (!piece.includes(SELECTED)) {
+    if (this.selectedPieceId !== piece.id) {
       throw new InvalidMoveError(
         `${currentRow},${currentColumn} must be selected`
       );
@@ -88,7 +84,7 @@ export default class BoardBoss {
     const newSpace = this.readSpace([newRow, newColumn]);
 
     // Only Scarab's can switch with another piece
-    if (newSpace !== EMPTY && !piece.includes(SCARAB)) {
+    if (newSpace !== null && piece.type !== SCARAB) {
       throw new InvalidMoveError(
         `${newRow},${newColumn} is not an empty space`
       );
