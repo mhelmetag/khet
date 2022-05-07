@@ -1,4 +1,4 @@
-import BoardConstructor from "./BoardConstructor";
+import buildBoard from "./buildBoard";
 
 export const PHARAOH = "pharaoh";
 export const SCARAB = "scarab";
@@ -23,7 +23,7 @@ export class InvalidMoveError extends Error {
 export default class BoardBoss {
   constructor(gameType = "classic") {
     this.selectedPieceId = null;
-    this.board = new BoardConstructor(gameType).board;
+    this.board = new buildBoard(gameType);
   }
 
   writeSpace([row, column], value) {
