@@ -13,5 +13,6 @@ export default class PieceBoss {
     this.id = id++;
     this.type = params.type;
     this.player = params.player;
+    this.angle = params.angle || 0;
   }
 }

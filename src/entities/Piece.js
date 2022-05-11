@@ -1,11 +1,10 @@
 import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT, PLAYER_ONE, PLAYER_TWO } from "../constants";
+import { CELL_WIDTH, CELL_HEIGHT } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY } from "../helpers/boardHelpers";
+import { pieceImageSource } from "../helpers/imageHelpers";
 
 const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
-const PLAYER_ONE_PIECE_COLOR = 0xc0392b;
-const PLAYER_TWO_PIECE_COLOR = 0xcecaca;
 export class Piece {
   constructor(params) {
     this.scene = params.scene;
@@ -13,22 +12,12 @@ export class Piece {
     this.player = params.player;
     this.x = params.x;
     this.y = params.y;
+    this.angle = params.angle || 0;
+
+    this.pieceImageSource = pieceImageSource(this.player);
 
     this.potentialMovesGrid = null;
     this.selected = false;
-
-    switch (params.player) {
-      case PLAYER_ONE:
-        this.color = PLAYER_ONE_PIECE_COLOR;
-        break;
-      case PLAYER_TWO:
-        this.color = PLAYER_TWO_PIECE_COLOR;
-        break;
-      default:
-        throw new Error(
-          `${params.player} is an invalid player (one of PLAYER_ONE or PLAYER_TWO)`
-        );
-    }
 
     // Overrides
     this.graphic = null;
