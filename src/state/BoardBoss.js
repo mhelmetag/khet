@@ -50,7 +50,6 @@ export default class BoardBoss {
     }
 
     this.selectedPieceId = piece.id;
-    this.writeSpace([row, column], piece);
   }
 
   deselectPiece([row, column]) {
@@ -64,7 +63,6 @@ export default class BoardBoss {
     }
 
     this.selectedPieceId = null;
-    this.writeSpace([row, column], piece);
   }
 
   movePiece([currentRow, currentColumn], [newRow, newColumn]) {
