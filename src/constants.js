@@ -9,3 +9,9 @@ export const CELL_WIDTH = GRID_WIDTH / COLUMNS;
 export const CELL_HEIGHT = GRID_HEIGHT / ROWS;
 export const PLAYER_ONE = "player_one";
 export const PLAYER_TWO = "player_two";
+export const DIRECTIONS = {
+  UP: 0,
+  RIGHT: 90,
+  DOWN: 180,
+  LEFT: 270,
+};

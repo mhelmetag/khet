@@ -1,3 +1,4 @@
+import { DIRECTIONS } from "../constants";
 import { TYPES } from "./BoardBoss";
 
 let id = 0;
@@ -13,6 +14,6 @@ export default class PieceBoss {
     this.id = id++;
     this.type = params.type;
     this.player = params.player;
-    this.angle = params.angle || 0;
+    this.angle = params.angle || DIRECTIONS.UP;
   }
 }

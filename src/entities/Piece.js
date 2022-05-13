@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT } from "../constants";
+import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
@@ -12,7 +12,7 @@ export class Piece {
     this.player = params.player;
     this.x = params.x;
     this.y = params.y;
-    this.angle = params.angle || 0;
+    this.angle = params.angle || DIRECTIONS.UP;
 
     this.pieceImageSource = pieceImageSource(this.player);
 
