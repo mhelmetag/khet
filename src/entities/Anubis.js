@@ -1,19 +1,20 @@
 import { GameObjects } from "phaser";
 import { Piece } from "./Piece";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { SCALE } from "../constants";
 
 export class Anubis extends Piece {
   constructor(params) {
     super(params);
 
-    this.graphic = new GameObjects.Rectangle(
+    this.graphic = new GameObjects.Image(
       params.scene,
       this.x,
       this.y,
-      CELL_WIDTH / 2,
-      CELL_HEIGHT / 2,
-      this.color
+      this.pieceImageSource,
+      3
     );
+
+    this.graphic.scale = SCALE;
 
     this.graphic.setInteractive();
     params.scene.sys.displayList.add(this.graphic);

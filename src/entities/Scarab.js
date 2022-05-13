@@ -1,19 +1,21 @@
 import { GameObjects } from "phaser";
 import { Piece } from "./Piece";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { SCALE } from "../constants";
 
 export class Scarab extends Piece {
   constructor(params) {
     super(params);
 
-    this.graphic = new GameObjects.Ellipse(
+    this.graphic = new GameObjects.Image(
       params.scene,
       this.x,
       this.y,
-      CELL_WIDTH / 2,
-      CELL_HEIGHT / 2,
-      this.color
+      this.pieceImageSource,
+      1
     );
+
+    this.graphic.angle = params.angle;
+    this.graphic.scale = SCALE;
 
     this.graphic.setInteractive();
     params.scene.sys.displayList.add(this.graphic);

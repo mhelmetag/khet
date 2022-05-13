@@ -18,6 +18,20 @@ export class MainScene extends Phaser.Scene {
     super({ ...config, key: "MainScene" });
   }
 
+  preload() {
+    this.load.spritesheet(
+      "player-1-pieces",
+      "images/pieces/all-pieces-player-1.png",
+      { frameWidth: 100, frameHeight: 100 }
+    );
+
+    this.load.spritesheet(
+      "player-2-pieces",
+      "images/pieces/all-pieces-player-2.png",
+      { frameWidth: 100, frameHeight: 100 }
+    );
+  }
+
   create() {
     this.boardBoss = new BoardBoss();
     this.board = new Board(this);
@@ -30,6 +44,7 @@ export class MainScene extends Phaser.Scene {
         x: x,
         y: y,
         player: piece.player,
+        angle: piece.angle,
       };
 
       switch (piece.type) {
