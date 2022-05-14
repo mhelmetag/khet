@@ -1,5 +1,11 @@
 import { COLUMNS, PLAYER_ONE, ROWS } from "../constants";
-import BoardBoss, { SCARAB, PHARAOH, InvalidMoveError } from "./BoardBoss";
+import BoardBoss, {
+  SCARAB,
+  PHARAOH,
+  InvalidMoveError,
+  ANUBIS,
+  InvalidSelectionError,
+} from "./BoardBoss";
 import PieceBoss from "./PieceBoss";
 
 it("builds an empty 10 x 8 board", () => {
@@ -36,6 +42,19 @@ it("can deselect pharaoh", () => {
   boardBoss.deselectPiece([2, 3]);
 
   expect(boardBoss.selectedPieceId).toEqual(null);
+});
+
+it("can't select more than one piece", () => {
+  let boardBoss = new BoardBoss();
+  const pharoah = new PieceBoss({ type: PHARAOH, player: PLAYER_ONE });
+  const anubis = new PieceBoss({ type: ANUBIS, player: PLAYER_ONE });
+  boardBoss.writeSpace([2, 3], pharoah);
+  boardBoss.writeSpace([3, 3], anubis);
+  boardBoss.selectPiece([2, 3]);
+
+  expect(() => {
+    boardBoss.selectPiece([3, 3]);
+  }).toThrow(InvalidSelectionError);
 });
 
 it("can move pharaoh from 2,3 to 3,3", () => {

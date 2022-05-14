@@ -40,12 +40,12 @@ export default class BoardBoss {
     if (piece === null) {
       throw new InvalidSelectionError(`${row},${column} is empty`);
     }
-    if (this.selectedPieceId) {
+    if (this.selectedPieceId && this.selectedPieceId === piece.id) {
       throw new InvalidSelectionError(
         `${this.selectedPieceId} is already selected`
       );
     }
-    if (piece.selected) {
+    if (this.selectedPieceId && this.selectedPieceId !== piece.id) {
       throw new InvalidSelectionError(`${row},${column} is already selected`);
     }
 
