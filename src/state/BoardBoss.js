@@ -96,6 +96,5 @@ export default class BoardBoss {
   rotatePiece([row, column], angle) {
     const piece = this.readSpace([row, column]);
     piece.angle = angle;
-    console.log(this.board);
   }
 }
