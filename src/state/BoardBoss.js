@@ -1,10 +1,11 @@
 import buildBoard from "./buildBoard";
 
+export const LASER = "laser";
 export const PHARAOH = "pharaoh";
 export const SCARAB = "scarab";
 export const ANUBIS = "anubis";
 export const PYRAMID = "pyramid";
-export const TYPES = [PHARAOH, SCARAB, ANUBIS, PYRAMID];
+export const TYPES = [LASER, PHARAOH, SCARAB, ANUBIS, PYRAMID];
 
 export class InvalidSelectionError extends Error {
   constructor(message) {
