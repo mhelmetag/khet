@@ -121,8 +121,9 @@ export class Piece {
       );
       this.rotateLeftButton.setInteractive();
       this.rotateLeftButton.on("pointerdown", () => {
-        console.log("rotate left");
         this.graphic.angle -= 90;
+        const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+        this.boardBoss.rotatePiece([row, column], this.graphic.angle);
       });
       this.scene.sys.displayList.add(this.rotateLeftButton);
 
@@ -142,8 +143,9 @@ export class Piece {
       );
       this.rotateRightButton.setInteractive();
       this.rotateRightButton.on("pointerdown", () => {
-        console.log("rotate right");
         this.graphic.angle += 90;
+        const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+        this.boardBoss.rotatePiece([row, column], this.graphic.angle);
       });
       this.scene.sys.displayList.add(this.rotateRightButton);
 
