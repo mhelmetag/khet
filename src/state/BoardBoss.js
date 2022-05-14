@@ -1,3 +1,4 @@
+import { ROWS } from "../constants";
 import buildBoard from "./buildBoard";
 
 export const LASER = "laser";
@@ -97,5 +98,57 @@ export default class BoardBoss {
   rotatePiece([row, column], angle) {
     const piece = this.readSpace([row, column]);
     piece.angle = angle;
+  }
+
+  fireLaser([row, column]) {
+    let cellsTraveled = [];
+    let direction = "up";
+
+    console.log("postion", [row, column]);
+
+    const move = ([currentRow, currentColumn]) => {
+      let nextPostion;
+      if (direction == "up" || direction == "down") {
+        nextPostion = [
+          currentRow - (direction == "up" ? 1 : -1),
+          currentColumn,
+        ];
+      } else {
+        nextPostion = [
+          currentRow,
+          currentColumn - (direction == "left" ? 1 : -1),
+        ];
+      }
+
+      console.log("nextPostion", nextPostion);
+
+      const piece = this.readSpace(nextPostion);
+
+      if (piece) {
+        // reflection/death
+        if (piece.type == SCARAB) {
+          if (piece.angle == 0 || Math.abs(piece.angle) === 180) {
+            direction = "left";
+          } else {
+            direction = "right";
+          }
+
+          cellsTraveled.push(nextPostion);
+          move(nextPostion);
+        } else {
+          console.log("reflection/death", cellsTraveled, direction);
+          return cellsTraveled;
+        }
+      } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
+        // off board
+        return cellsTraveled;
+      } else {
+        // continue
+        cellsTraveled.push(nextPostion);
+        move(nextPostion);
+      }
+    };
+
+    move([row, column]);
   }
 }

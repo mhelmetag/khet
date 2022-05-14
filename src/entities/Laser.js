@@ -1,9 +1,12 @@
 import { GameObjects } from "phaser";
 import { SCALE } from "../constants";
+import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
 
 export class Laser {
   constructor(params) {
+    this.boardBoss = params.boardBoss;
+
     this.graphic = new GameObjects.Image(
       params.scene,
       params.x,
@@ -19,6 +22,9 @@ export class Laser {
   }
 
   click() {
+    const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+
     console.log("boom");
+    this.boardBoss.fireLaser([row, column]);
   }
 }
