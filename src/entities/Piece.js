@@ -1,8 +1,26 @@
 import { GameObjects } from "phaser";
 import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
-import { gridFromXAndY } from "../helpers/boardHelpers";
+import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
+
+const getRotateLeftButtonPosition = (positionOfPiece) => {
+  const [column, row] = gridFromXAndY(positionOfPiece);
+
+  const rowOfButton = row - 2;
+  const columnOfButton = column - 2;
+
+  return xAndYFromGrid([rowOfButton, columnOfButton]);
+};
+
+const getRotateRightButtonPosition = (positionOfPiece) => {
+  const [column, row] = gridFromXAndY(positionOfPiece);
+
+  const rowOfButton = row - 2;
+  const columnOfButton = column + 2;
+
+  return xAndYFromGrid([rowOfButton, columnOfButton]);
+};
 
 const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
 export class Piece {
@@ -34,6 +52,8 @@ export class Piece {
 
       // Graphic update
       this.potentialMovesGrid.destroy();
+      this.rotateLeftButton.destroy();
+      this.rotateRightButton.destroy();
     };
 
     const select = () => {
@@ -45,6 +65,8 @@ export class Piece {
       this.selected = true;
 
       // Graphic update
+
+      // Moves Buttons
       this.potentialMovesGrid = new GameObjects.Grid(
         this.scene,
         this.graphic.x,
@@ -81,6 +103,50 @@ export class Piece {
           Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
       });
       this.scene.sys.displayList.add(this.potentialMovesGrid);
+
+      // Rotation Buttons
+      // Rotate Left Button
+      const rotateLeftPosition = getRotateLeftButtonPosition([
+        this.graphic.x,
+        this.graphic.y,
+      ]);
+      this.rotateLeftButton = new GameObjects.Rectangle(
+        this.scene,
+        rotateLeftPosition[0],
+        rotateLeftPosition[1],
+        CELL_WIDTH,
+        CELL_HEIGHT,
+        0x00ff00,
+        0.5
+      );
+      this.rotateLeftButton.setInteractive();
+      this.rotateLeftButton.on("pointerdown", () => {
+        console.log("rotate left");
+        this.graphic.angle -= 90;
+      });
+      this.scene.sys.displayList.add(this.rotateLeftButton);
+
+      // Rotate Right Button
+      const rotateRightPosition = getRotateRightButtonPosition([
+        this.graphic.x,
+        this.graphic.y,
+      ]);
+      this.rotateRightButton = new GameObjects.Rectangle(
+        this.scene,
+        rotateRightPosition[0],
+        rotateRightPosition[1],
+        CELL_WIDTH,
+        CELL_HEIGHT,
+        0xff0000,
+        0.5
+      );
+      this.rotateRightButton.setInteractive();
+      this.rotateRightButton.on("pointerdown", () => {
+        console.log("rotate right");
+        this.graphic.angle += 90;
+      });
+      this.scene.sys.displayList.add(this.rotateRightButton);
+
       this.scene.children.bringToTop(this.graphic);
     };
 
