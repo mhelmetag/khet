@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS } from "../constants";
+import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS, COLUMNS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
@@ -7,8 +7,21 @@ import { pieceImageSource } from "../helpers/imageHelpers";
 const getRotateLeftButtonPosition = (positionOfPiece) => {
   const [column, row] = gridFromXAndY(positionOfPiece);
 
-  const rowOfButton = row - 2;
-  const columnOfButton = column - 2;
+  let rowOfButton;
+  let columnOfButton;
+  if (column >= COLUMNS - 2) {
+    columnOfButton = column - 2;
+    rowOfButton = row - 1;
+  } else if (column <= 1) {
+    columnOfButton = column + 1;
+    rowOfButton = row - 2;
+  } else if (row <= 1) {
+    columnOfButton = column - 2;
+    rowOfButton = row + 2;
+  } else {
+    rowOfButton = row - 2;
+    columnOfButton = column - 2;
+  }
 
   return xAndYFromGrid([rowOfButton, columnOfButton]);
 };
@@ -16,8 +29,21 @@ const getRotateLeftButtonPosition = (positionOfPiece) => {
 const getRotateRightButtonPosition = (positionOfPiece) => {
   const [column, row] = gridFromXAndY(positionOfPiece);
 
-  const rowOfButton = row - 2;
-  const columnOfButton = column + 2;
+  let rowOfButton;
+  let columnOfButton;
+  if (column >= COLUMNS - 2) {
+    columnOfButton = column - 1;
+    rowOfButton = row - 2;
+  } else if (column <= 1) {
+    columnOfButton = column + 2;
+    rowOfButton = row - 1;
+  } else if (row <= 1) {
+    columnOfButton = column + 2;
+    rowOfButton = row + 2;
+  } else {
+    columnOfButton = column + 2;
+    rowOfButton = row - 2;
+  }
 
   return xAndYFromGrid([rowOfButton, columnOfButton]);
 };
@@ -97,6 +123,8 @@ export class Piece {
 
         // Graphic update
         this.potentialMovesGrid.destroy();
+        this.rotateLeftButton.destroy();
+        this.rotateRightButton.destroy();
         this.graphic.x =
           Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
         this.graphic.y =
