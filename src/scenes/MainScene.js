@@ -8,10 +8,12 @@ import BoardBoss, {
   PHARAOH,
   PYRAMID,
   TYPES,
+  LASER,
 } from "../state/BoardBoss";
 import { xAndYFromGrid } from "../helpers/boardHelpers";
 import { Pyramid } from "../entities/Pyramid";
 import { Anubis } from "../entities/Anubis";
+import { Laser } from "../entities/Laser";
 
 export class MainScene extends Phaser.Scene {
   constructor(config) {
@@ -48,6 +50,8 @@ export class MainScene extends Phaser.Scene {
       };
 
       switch (piece.type) {
+        case LASER:
+          return new Laser(options);
         case PHARAOH:
           return new Pharaoh(options);
         case SCARAB:
