@@ -92,4 +92,9 @@ export default class BoardBoss {
     this.writeSpace([newRow, newColumn], piece);
     this.deselectPiece([newRow, newColumn]);
   }
+
+  rotatePiece([row, column], angle) {
+    const piece = this.readSpace([row, column]);
+    piece.angle = angle;
+  }
 }
