@@ -1,7 +1,7 @@
 import { GameObjects } from "phaser";
 import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS, COLUMNS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
-import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
+import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
 import {
   getRotateLeftButtonPosition,
