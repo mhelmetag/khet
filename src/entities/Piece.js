@@ -3,50 +3,10 @@ import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS, COLUMNS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
-
-const getRotateLeftButtonPosition = (positionOfPiece) => {
-  const [column, row] = gridFromXAndY(positionOfPiece);
-
-  let rowOfButton;
-  let columnOfButton;
-  if (column >= COLUMNS - 2) {
-    columnOfButton = column - 2;
-    rowOfButton = row - 1;
-  } else if (column <= 1) {
-    columnOfButton = column + 1;
-    rowOfButton = row - 2;
-  } else if (row <= 1) {
-    columnOfButton = column - 2;
-    rowOfButton = row + 2;
-  } else {
-    rowOfButton = row - 2;
-    columnOfButton = column - 2;
-  }
-
-  return xAndYFromGrid([rowOfButton, columnOfButton]);
-};
-
-const getRotateRightButtonPosition = (positionOfPiece) => {
-  const [column, row] = gridFromXAndY(positionOfPiece);
-
-  let rowOfButton;
-  let columnOfButton;
-  if (column >= COLUMNS - 2) {
-    columnOfButton = column - 1;
-    rowOfButton = row - 2;
-  } else if (column <= 1) {
-    columnOfButton = column + 2;
-    rowOfButton = row - 1;
-  } else if (row <= 1) {
-    columnOfButton = column + 2;
-    rowOfButton = row + 2;
-  } else {
-    columnOfButton = column + 2;
-    rowOfButton = row - 2;
-  }
-
-  return xAndYFromGrid([rowOfButton, columnOfButton]);
-};
+import {
+  getRotateLeftButtonPosition,
+  getRotateRightButtonPosition,
+} from "../helpers/rotateButtonHelpers";
 
 const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
 export class Piece {
@@ -177,6 +137,7 @@ export class Piece {
       });
       this.scene.sys.displayList.add(this.rotateRightButton);
 
+      // Extra stuff
       this.scene.children.bringToTop(this.graphic);
     };
 
