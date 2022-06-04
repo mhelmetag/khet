@@ -1,12 +1,10 @@
 import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS, COLUMNS } from "../constants";
+import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS } from "../constants";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
-import {
-  getRotateLeftButtonPosition,
-  getRotateRightButtonPosition,
-} from "../helpers/rotateButtonHelpers";
+import RotateRightButton from "./RotateRightButton";
+import RotateLeftButton from "./RotateLeftButton";
 
 const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
 export class Piece {
@@ -94,48 +92,18 @@ export class Piece {
 
       // Rotation Buttons
       // Rotate Left Button
-      const rotateLeftPosition = getRotateLeftButtonPosition([
-        this.graphic.x,
-        this.graphic.y,
-      ]);
-      this.rotateLeftButton = new GameObjects.Rectangle(
-        this.scene,
-        rotateLeftPosition[0],
-        rotateLeftPosition[1],
-        CELL_WIDTH,
-        CELL_HEIGHT,
-        0x00ff00,
-        0.5
-      );
-      this.rotateLeftButton.setInteractive();
-      this.rotateLeftButton.on("pointerdown", () => {
-        this.graphic.angle -= 90;
-        const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
-        this.boardBoss.rotatePiece([row, column], this.graphic.angle);
+      this.rotateLeftButton = new RotateLeftButton({
+        piece: this.graphic,
+        scene: this.scene,
+        boardBoss: this.boardBoss,
       });
-      this.scene.sys.displayList.add(this.rotateLeftButton);
 
       // Rotate Right Button
-      const rotateRightPosition = getRotateRightButtonPosition([
-        this.graphic.x,
-        this.graphic.y,
-      ]);
-      this.rotateRightButton = new GameObjects.Rectangle(
-        this.scene,
-        rotateRightPosition[0],
-        rotateRightPosition[1],
-        CELL_WIDTH,
-        CELL_HEIGHT,
-        0xff0000,
-        0.5
-      );
-      this.rotateRightButton.setInteractive();
-      this.rotateRightButton.on("pointerdown", () => {
-        this.graphic.angle += 90;
-        const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
-        this.boardBoss.rotatePiece([row, column], this.graphic.angle);
+      this.rotateRightButton = new RotateRightButton({
+        piece: this.graphic,
+        scene: this.scene,
+        boardBoss: this.boardBoss,
       });
-      this.scene.sys.displayList.add(this.rotateRightButton);
 
       // Extra stuff
       this.scene.children.bringToTop(this.graphic);
