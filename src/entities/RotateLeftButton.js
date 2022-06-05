@@ -41,9 +41,15 @@ export default class RotateLeftButton {
     );
     this.graphic.setInteractive();
     this.graphic.on("pointerdown", () => {
-      params.piece.angle -= 90;
+      // Piece state update
+      params.piece.rotate(-90);
+
+      // Board update
       const [column, row] = gridFromXAndY([params.piece.x, params.piece.y]);
-      params.boardBoss.rotatePiece([row, column], params.piece.angle);
+      params.boardBoss.rotatePiece([row, column], params.piece.graphic.angle);
+
+      // Graphic update
+      params.possibleMoves.destroy();
     });
     params.scene.sys.displayList.add(this.graphic);
   }

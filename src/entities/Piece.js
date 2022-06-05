@@ -1,12 +1,8 @@
-import { GameObjects } from "phaser";
-import { CELL_WIDTH, CELL_HEIGHT, DIRECTIONS } from "../constants";
-import { BOARD_BOARDER_COLOR } from "./Board";
+import { CELL_HEIGHT, CELL_WIDTH, DIRECTIONS } from "../constants";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
-import RotateRightButton from "./RotateRightButton";
-import RotateLeftButton from "./RotateLeftButton";
+import PossibleMoves from "./PossibleMoves";
 
-const POSSIBLE_MOVES_GRID_COLOR = 0x0000ff;
 export class Piece {
   constructor(params) {
     this.scene = params.scene;
@@ -18,14 +14,14 @@ export class Piece {
 
     this.pieceImageSource = pieceImageSource(this.player);
 
-    this.potentialMovesGrid = null;
+    this.possibleMoves = null;
     this.selected = false;
 
     // Overrides
     this.graphic = null;
   }
 
-  click = () => {
+  click() {
     const deselect = () => {
       // Board state update
       const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
@@ -35,9 +31,7 @@ export class Piece {
       this.selected = false;
 
       // Graphic update
-      this.potentialMovesGrid.destroy();
-      this.rotateLeftButton.destroy();
-      this.rotateRightButton.destroy();
+      this.possibleMoves.destroy();
     };
 
     const select = () => {
@@ -49,63 +43,12 @@ export class Piece {
       this.selected = true;
 
       // Graphic update
-
-      // Moves Buttons
-      this.potentialMovesGrid = new GameObjects.Grid(
-        this.scene,
-        this.graphic.x,
-        this.graphic.y,
-        3 * CELL_WIDTH,
-        3 * CELL_HEIGHT,
-        CELL_WIDTH,
-        CELL_HEIGHT,
-        POSSIBLE_MOVES_GRID_COLOR,
-        0.2,
-        BOARD_BOARDER_COLOR
-      );
-      this.potentialMovesGrid.setInteractive();
-      this.potentialMovesGrid.on("pointerdown", ({ x, y }) => {
-        // Board state update
-        const [currentColumn, currentRow] = gridFromXAndY([
-          this.graphic.x,
-          this.graphic.y,
-        ]);
-        const [newColumn, newRow] = gridFromXAndY([x, y]);
-        this.boardBoss.movePiece(
-          [currentRow, currentColumn],
-          [newRow, newColumn]
-        );
-
-        // Internal state update
-        this.selected = false;
-
-        // Graphic update
-        this.potentialMovesGrid.destroy();
-        this.rotateLeftButton.destroy();
-        this.rotateRightButton.destroy();
-        this.graphic.x =
-          Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
-        this.graphic.y =
-          Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
-      });
-      this.scene.sys.displayList.add(this.potentialMovesGrid);
-
-      // Rotation Buttons
-      // Rotate Left Button
-      this.rotateLeftButton = new RotateLeftButton({
-        piece: this.graphic,
+      this.possibleMoves = new PossibleMoves({
+        piece: this,
         scene: this.scene,
         boardBoss: this.boardBoss,
       });
 
-      // Rotate Right Button
-      this.rotateRightButton = new RotateRightButton({
-        piece: this.graphic,
-        scene: this.scene,
-        boardBoss: this.boardBoss,
-      });
-
-      // Extra stuff
       this.scene.children.bringToTop(this.graphic);
     };
 
@@ -114,5 +57,23 @@ export class Piece {
     } else {
       select();
     }
-  };
+  }
+
+  move({ x, y }) {
+    // Internal state update
+    this.selected = false;
+
+    // Graphic update
+    this.x = this.graphic.x =
+      Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
+    this.y = this.graphic.y =
+      Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
+  }
+
+  rotate(angle) {
+    // Internal state update
+    this.selected = false;
+
+    this.graphic.angle += angle;
+  }
 }

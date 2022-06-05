@@ -95,6 +95,20 @@ export default class BoardBoss {
 
   rotatePiece([row, column], angle) {
     const piece = this.readSpace([row, column]);
+
+    if (piece === null) {
+      throw new InvalidSelectionError(
+        `${currentRow},${currentColumn} is empty`
+      );
+    }
+    if (this.selectedPieceId !== piece.id) {
+      throw new InvalidMoveError(
+        `${currentRow},${currentColumn} must be selected`
+      );
+    }
+
     piece.angle = angle;
+
+    this.deselectPiece([row, column]);
   }
 }
