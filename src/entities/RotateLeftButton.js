@@ -1,11 +1,31 @@
 import { GameObjects } from "phaser";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
-import { gridFromXAndY } from "../helpers/boardHelpers";
-import { getRotateLeftButtonPosition } from "../helpers/rotateButtonHelpers";
+import { CELL_HEIGHT, CELL_WIDTH, COLUMNS } from "../constants";
+import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
+
+const getRotateLeftButtonPosition = (positionOfPiece) => {
+  const [column, row] = gridFromXAndY(positionOfPiece);
+
+  let rowOfButton;
+  let columnOfButton;
+  if (column >= COLUMNS - 2) {
+    columnOfButton = column - 2;
+    rowOfButton = row - 1;
+  } else if (column <= 1) {
+    columnOfButton = column + 1;
+    rowOfButton = row - 2;
+  } else if (row <= 1) {
+    columnOfButton = column - 2;
+    rowOfButton = row + 2;
+  } else {
+    rowOfButton = row - 2;
+    columnOfButton = column - 2;
+  }
+
+  return xAndYFromGrid([rowOfButton, columnOfButton]);
+};
 
 export default class RotateLeftButton {
   constructor(params) {
-    // Rotate Left Button
     const position = getRotateLeftButtonPosition([
       params.piece.x,
       params.piece.y,
