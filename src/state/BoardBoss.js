@@ -97,14 +97,10 @@ export default class BoardBoss {
     const piece = this.readSpace([row, column]);
 
     if (piece === null) {
-      throw new InvalidSelectionError(
-        `${currentRow},${currentColumn} is empty`
-      );
+      throw new InvalidSelectionError(`${row},${column} is empty`);
     }
     if (this.selectedPieceId !== piece.id) {
-      throw new InvalidMoveError(
-        `${currentRow},${currentColumn} must be selected`
-      );
+      throw new InvalidMoveError(`${row},${column} must be selected`);
     }
 
     piece.angle = angle;
