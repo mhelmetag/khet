@@ -20,12 +20,6 @@ export default class PossibleMoves {
       0.2,
       BOARD_BOARDER_COLOR
     );
-    this.graphic.setInteractive();
-    this.graphic.on("pointerdown", ({ x, y }) => {
-      params.piece.move({ x, y });
-    });
-    params.scene.sys.displayList.add(this.graphic);
-
     this.rotateLeftButton = new RotateLeftButton({
       possibleMoves: this,
       piece: params.piece,
@@ -39,6 +33,12 @@ export default class PossibleMoves {
       scene: params.scene,
       boardBoss: params.boardBoss,
     });
+
+    this.graphic.setInteractive();
+    this.graphic.on("pointerdown", ({ x, y }) => {
+      params.piece.move({ x, y });
+    });
+    params.scene.sys.displayList.add(this.graphic);
   }
 
   destroy() {

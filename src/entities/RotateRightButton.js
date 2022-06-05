@@ -39,6 +39,7 @@ export default class RotateRightButton {
       0xff0000,
       0.5
     );
+
     this.graphic.setInteractive();
     this.graphic.on("pointerdown", () => {
       params.piece.rotate(90);

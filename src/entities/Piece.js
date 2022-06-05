@@ -30,7 +30,6 @@ export class Piece {
       // Internal state update
       this.selected = false;
 
-      // Graphic update
       this.possibleMoves.destroy();
     };
 
@@ -42,13 +41,11 @@ export class Piece {
       // Internal state update
       this.selected = true;
 
-      // Graphic update
       this.possibleMoves = new PossibleMoves({
         piece: this,
         scene: this.scene,
         boardBoss: this.boardBoss,
       });
-
       this.scene.children.bringToTop(this.graphic);
     };
 
