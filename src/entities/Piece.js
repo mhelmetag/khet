@@ -24,7 +24,7 @@ export class Piece {
   click() {
     const deselect = () => {
       // Board state update
-      const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+      const [column, row] = gridFromXAndY([this.x, this.y]);
       this.boardBoss.deselectPiece([row, column]);
 
       // Internal state update
@@ -36,7 +36,7 @@ export class Piece {
 
     const select = () => {
       // Board state update
-      const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+      const [column, row] = gridFromXAndY([this.x, this.y]);
       this.boardBoss.selectPiece([row, column]);
 
       // Internal state update
@@ -60,20 +60,30 @@ export class Piece {
   }
 
   move({ x, y }) {
+    // Board state update
+    const [currentColumn, currentRow] = gridFromXAndY([this.x, this.y]);
+    const [newColumn, newRow] = gridFromXAndY([x, y]);
+    this.boardBoss.movePiece([currentRow, currentColumn], [newRow, newColumn]);
+
     // Internal state update
     this.selected = false;
-
-    // Graphic update
     this.x = this.graphic.x =
       Math.floor(x / CELL_WIDTH) * CELL_WIDTH + CELL_WIDTH / 2;
     this.y = this.graphic.y =
       Math.floor(y / CELL_HEIGHT) * CELL_HEIGHT + CELL_HEIGHT / 2;
+
+    this.possibleMoves.destroy();
   }
 
   rotate(angle) {
+    // Board state update
+    const [column, row] = gridFromXAndY([this.x, this.y]);
+    this.boardBoss.rotatePiece([row, column], this.angle);
+
     // Internal state update
     this.selected = false;
+    this.angle = this.graphic.angle += angle;
 
-    this.graphic.angle += angle;
+    this.possibleMoves.destroy();
   }
 }

@@ -1,6 +1,5 @@
 import { GameObjects } from "phaser";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
-import { gridFromXAndY } from "../helpers/boardHelpers";
 import { BOARD_BOARDER_COLOR } from "./Board";
 import RotateLeftButton from "./RotateLeftButton";
 import RotateRightButton from "./RotateRightButton";
@@ -23,24 +22,7 @@ export default class PossibleMoves {
     );
     this.graphic.setInteractive();
     this.graphic.on("pointerdown", ({ x, y }) => {
-      // Board state update
-      const [currentColumn, currentRow] = gridFromXAndY([
-        params.piece.x,
-        params.piece.y,
-      ]);
-      const [newColumn, newRow] = gridFromXAndY([x, y]);
-      params.boardBoss.movePiece(
-        [currentRow, currentColumn],
-        [newRow, newColumn]
-      );
-
-      // Piece state update
       params.piece.move({ x, y });
-
-      // Graphic update
-      this.graphic.destroy();
-      this.rotateLeftButton.destroy();
-      this.rotateRightButton.destroy();
     });
     params.scene.sys.displayList.add(this.graphic);
 
