@@ -105,7 +105,7 @@ export default class BoardBoss {
       throw new InvalidMoveError(`${row},${column} must be selected`);
     }
 
-    piece.angle = angle;
+    piece.angle += angle;
 
     this.deselectPiece([row, column]);
   }
@@ -182,6 +182,9 @@ export default class BoardBoss {
             );
             return cellsTraveled;
           }
+
+          cellsTraveled.push(nextPostion);
+          move(nextPostion);
         } else if (piece.type === SCARAB) {
           // SCARAB reflection
           if (piece.angle === 0 || Math.abs(piece.angle) === 180) {
@@ -197,11 +200,9 @@ export default class BoardBoss {
           console.log("absorbed", cellsTraveled, direction);
           return cellsTraveled;
         }
-
-        cellsTraveled.push(nextPostion);
-        move(nextPostion);
       } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
         // off board
+        console.log("off board");
         return cellsTraveled;
       } else {
         // continue

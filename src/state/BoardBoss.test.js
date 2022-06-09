@@ -99,13 +99,11 @@ it("can move scarab to where pharaoh is and switch positions", () => {
 it("can rotate a piece", () => {
   let boardBoss = new BoardBoss();
 
-  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE });
+  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE, angle: 90 });
   boardBoss.writeSpace([3, 3], scarab);
-
-  const initialAngle = scarab.angle;
 
   boardBoss.selectPiece([3, 3]);
   boardBoss.rotatePiece([3, 3], 90);
 
-  expect(scarab.angle).not.toEqual(initialAngle);
+  expect(scarab.angle).toEqual(180);
 });
