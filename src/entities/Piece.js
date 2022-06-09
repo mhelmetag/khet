@@ -1,4 +1,4 @@
-import { CELL_HEIGHT, CELL_WIDTH, DIRECTIONS } from "../constants";
+import { CELL_HEIGHT, CELL_WIDTH, ANGLES } from "../constants";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
 import PossibleMoves from "./PossibleMoves";
@@ -10,7 +10,7 @@ export class Piece {
     this.player = params.player;
     this.x = params.x;
     this.y = params.y;
-    this.angle = params.angle || DIRECTIONS.UP;
+    this.angle = params.angle || ANGLES.UP;
 
     this.pieceImageSource = pieceImageSource(this.player);
 

@@ -1,4 +1,4 @@
-import { ROWS } from "../constants";
+import { DIRECTIONS, ROWS } from "../constants";
 import buildBoard from "./buildBoard";
 
 export const LASER = "laser";
@@ -112,21 +112,21 @@ export default class BoardBoss {
 
   fireLaser([row, column]) {
     let cellsTraveled = [];
-    let direction = "up";
+    let direction = DIRECTIONS.UP;
 
     console.log("postion", [row, column]);
 
     const move = ([currentRow, currentColumn]) => {
       let nextPostion;
-      if (direction == "up" || direction == "down") {
+      if (direction === DIRECTIONS.UP || direction === DIRECTIONS.DOWN) {
         nextPostion = [
-          currentRow - (direction == "up" ? 1 : -1),
+          currentRow - (direction === DIRECTIONS.UP ? 1 : -1),
           currentColumn,
         ];
       } else {
         nextPostion = [
           currentRow,
-          currentColumn - (direction == "left" ? 1 : -1),
+          currentColumn - (direction === DIRECTIONS.LEFT ? 1 : -1),
         ];
       }
 
@@ -135,20 +135,71 @@ export default class BoardBoss {
       const piece = this.readSpace(nextPostion);
 
       if (piece) {
-        // reflection/death
-        if (piece.type == SCARAB) {
-          if (piece.angle == 0 || Math.abs(piece.angle) === 180) {
-            direction = "left";
+        if (piece.type === PYRAMID) {
+          // PYRAMID reflection
+          if (piece.angle === 0) {
+            if (direction === DIRECTIONS.DOWN) {
+              direction = DIRECTIONS.RIGHT;
+            } else if (direction === DIRECTIONS.LEFT) {
+              direction = DIRECTIONS.UP;
+            } else {
+              console.log("death", cellsTraveled, direction);
+              return cellsTraveled;
+            }
+          } else if (piece.angle === 90) {
+            if (direction === DIRECTIONS.UP) {
+              direction = DIRECTIONS.RIGHT;
+            } else if (direction === DIRECTIONS.LEFT) {
+              direction = DIRECTIONS.DOWN;
+            } else {
+              console.log("death", cellsTraveled, direction);
+              return cellsTraveled;
+            }
+          } else if (piece.angle === 180) {
+            if (direction === DIRECTIONS.UP) {
+              direction = DIRECTIONS.LEFT;
+            } else if (direction === DIRECTIONS.LEFT) {
+              direction = DIRECTIONS.DOWN;
+            } else {
+              console.log("death", cellsTraveled, direction);
+              return cellsTraveled;
+            }
+          } else if (piece.angle === 270) {
+            if (direction === DIRECTIONS.RIGHT) {
+              direction = DIRECTIONS.UP;
+            } else if (direction === DIRECTIONS.DOWN) {
+              direction = DIRECTIONS.LEFT;
+            } else {
+              console.log("death", cellsTraveled, direction);
+              return cellsTraveled;
+            }
           } else {
-            direction = "right";
+            console.log(
+              "weird pyramid death",
+              cellsTraveled,
+              direction,
+              piece.angle
+            );
+            return cellsTraveled;
+          }
+        } else if (piece.type === SCARAB) {
+          // SCARAB reflection
+          if (piece.angle === 0 || Math.abs(piece.angle) === 180) {
+            direction = DIRECTIONS.LEFT;
+          } else {
+            direction = DIRECTIONS.RIGHT;
           }
 
           cellsTraveled.push(nextPostion);
           move(nextPostion);
-        } else {
-          console.log("reflection/death", cellsTraveled, direction);
+        } else if (piece.type === ANUBIS) {
+          // ANUBIS absorbtion
+          console.log("absorbed", cellsTraveled, direction);
           return cellsTraveled;
         }
+
+        cellsTraveled.push(nextPostion);
+        move(nextPostion);
       } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
         // off board
         return cellsTraveled;
