@@ -120,7 +120,7 @@ export default class BoardBoss {
 
   fireLaser([row, column]) {
     let deadPiece;
-    let cellsTraveled = [];
+    let cellsTraveled = [[row, column]];
     let direction = DIRECTIONS.UP;
 
     const moveLaser = ([currentRow, currentColumn]) => {
@@ -137,17 +137,18 @@ export default class BoardBoss {
         ];
       }
 
+      cellsTraveled.push(nextPostion);
+
       const piece = this.readSpace(nextPostion);
       if (piece) {
         if (piece.type === PYRAMID) {
-          // PYRAMID reflection
+          // PYRAMID reflection/death
           if (piece.angle === ANGLES.UP) {
             if (direction === DIRECTIONS.DOWN) {
               direction = DIRECTIONS.RIGHT;
             } else if (direction === DIRECTIONS.LEFT) {
               direction = DIRECTIONS.UP;
             } else {
-              console.log("death", cellsTraveled, direction);
               deadPiece = piece;
               return;
             }
@@ -157,7 +158,6 @@ export default class BoardBoss {
             } else if (direction === DIRECTIONS.LEFT) {
               direction = DIRECTIONS.DOWN;
             } else {
-              console.log("death", cellsTraveled, direction);
               deadPiece = piece;
               return;
             }
@@ -167,7 +167,6 @@ export default class BoardBoss {
             } else if (direction === DIRECTIONS.RIGHT) {
               direction = DIRECTIONS.DOWN;
             } else {
-              console.log("death", cellsTraveled, direction);
               deadPiece = piece;
               return;
             }
@@ -177,7 +176,6 @@ export default class BoardBoss {
             } else if (direction === DIRECTIONS.DOWN) {
               direction = DIRECTIONS.LEFT;
             } else {
-              console.log("death", cellsTraveled, direction);
               deadPiece = piece;
               return;
             }
@@ -186,7 +184,6 @@ export default class BoardBoss {
             return;
           }
 
-          cellsTraveled.push(nextPostion);
           moveLaser(nextPostion);
         } else if (piece.type === SCARAB) {
           // SCARAB reflection
@@ -224,42 +221,33 @@ export default class BoardBoss {
             return;
           }
 
-          cellsTraveled.push(nextPostion);
           moveLaser(nextPostion);
         } else if (piece.type === ANUBIS) {
-          // ANUBIS absorbtion
+          // ANUBIS absorbtion/death
           if (
             (piece.angle === ANGLES.UP && direction === DIRECTIONS.DOWN) ||
             (piece.angle === ANGLES.RIGHT && direction === DIRECTIONS.LEFT) ||
             (piece.angle === ANGLES.DOWN && direction === DIRECTIONS.UP) ||
             (piece.angle === ANGLES.LEFT && direction === DIRECTIONS.RIGHT)
           ) {
-            console.log("absorbed", cellsTraveled, direction);
             return;
           } else {
-            console.log("death", cellsTraveled, direction);
             deadPiece = piece;
             return;
           }
         } else if (piece.type === PHARAOH) {
-          // PHARAOH game over
-          console.log("game over", cellsTraveled, direction);
+          // PHARAOH death
           deadPiece = piece;
           return;
         }
       } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
         // off board
-        console.log("off board");
-        cellsTraveled.push(nextPostion);
         return;
       } else if (nextPostion[1] <= 0 || nextPostion[1] >= COLUMNS) {
         // off board
-        console.log("off board");
-        cellsTraveled.push(nextPostion);
         return;
       } else {
         // continue
-        cellsTraveled.push(nextPostion);
         moveLaser(nextPostion);
       }
     };

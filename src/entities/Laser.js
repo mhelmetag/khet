@@ -31,7 +31,6 @@ export class Laser {
 
     const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
 
-    console.log("fire");
     const [, cellsTraveled] = this.boardBoss.fireLaser([row, column]);
     this.laserPath = new LaserPath({
       scene: this.graphic.scene,
