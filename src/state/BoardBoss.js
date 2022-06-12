@@ -191,12 +191,34 @@ export default class BoardBoss {
         } else if (piece.type === SCARAB) {
           // SCARAB reflection
           if (piece.angle === ANGLES.UP || piece.angle === ANGLES.DOWN) {
-            direction = DIRECTIONS.LEFT;
+            if (direction === DIRECTIONS.UP) {
+              direction = DIRECTIONS.LEFT;
+            } else if (direction === DIRECTIONS.RIGHT) {
+              direction = DIRECTIONS.DOWN;
+            } else if (direction === DIRECTIONS.DOWN) {
+              direction = DIRECTIONS.RIGHT;
+            } else if (direction === DIRECTIONS.LEFT) {
+              direction = DIRECTIONS.UP;
+            } else {
+              console.log("unexpected case", cellsTraveled, direction, piece);
+              return;
+            }
           } else if (
             piece.angle === ANGLES.LEFT ||
             piece.angle === ANGLES.RIGHT
           ) {
-            direction = DIRECTIONS.RIGHT;
+            if (direction === DIRECTIONS.UP) {
+              direction = DIRECTIONS.RIGHT;
+            } else if (direction === DIRECTIONS.RIGHT) {
+              direction = DIRECTIONS.UP;
+            } else if (direction === DIRECTIONS.DOWN) {
+              direction = DIRECTIONS.LEFT;
+            } else if (direction === DIRECTIONS.LEFT) {
+              direction = DIRECTIONS.DOWN;
+            } else {
+              console.log("unexpected case", cellsTraveled, direction, piece);
+              return;
+            }
           } else {
             console.log("unexpected case", cellsTraveled, direction, piece);
             return;
@@ -206,6 +228,10 @@ export default class BoardBoss {
           moveLaser(nextPostion);
         } else if (piece.type === ANUBIS) {
           // ANUBIS absorbtion
+          // This isn't the real rules but we'll go for it for now
+          // This should be something like
+          // "when the laser direction and ANUBIS direction are different, it dies"
+          // "otherwise, it lives"
           console.log("absorbed", cellsTraveled, direction);
           return;
         } else if (piece.type === PHARAOH) {
