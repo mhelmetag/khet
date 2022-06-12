@@ -1,4 +1,4 @@
-import { COLUMNS, PLAYER_ONE, ROWS } from "../constants";
+import { ANGLES, COLUMNS, PLAYER_ONE, ROTATIONS, ROWS } from "../constants";
 import BoardBoss, {
   SCARAB,
   PHARAOH,
@@ -99,39 +99,47 @@ it("can move scarab to where pharaoh is and switch positions", () => {
 it("can rotate a piece", () => {
   let boardBoss = new BoardBoss();
 
-  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE, angle: 90 });
+  const scarab = new PieceBoss({
+    type: SCARAB,
+    player: PLAYER_ONE,
+    angle: ANGLES.RIGHT,
+  });
   boardBoss.writeSpace([3, 3], scarab);
 
   boardBoss.selectPiece([3, 3]);
-  boardBoss.rotatePiece([3, 3], 90);
+  boardBoss.rotatePiece([3, 3], ROTATIONS.RIGHT);
 
-  expect(scarab.angle).toEqual(180);
+  expect(scarab.angle).toEqual(ANGLES.DOWN);
 });
 
-it("can rotate a piece around cw", () => {
+it("can rotate a piece around right", () => {
   let boardBoss = new BoardBoss();
 
   const scarab = new PieceBoss({
     type: SCARAB,
     player: PLAYER_ONE,
-    angle: 270,
+    angle: ANGLES.LEFT,
   });
   boardBoss.writeSpace([3, 3], scarab);
 
   boardBoss.selectPiece([3, 3]);
-  boardBoss.rotatePiece([3, 3], 90);
+  boardBoss.rotatePiece([3, 3], ROTATIONS.RIGHT);
 
-  expect(scarab.angle).toEqual(0);
+  expect(scarab.angle).toEqual(ANGLES.UP);
 });
 
-it("can rotate a piece around ccw", () => {
+it("can rotate a piece around left", () => {
   let boardBoss = new BoardBoss();
 
-  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE, angle: 0 });
+  const scarab = new PieceBoss({
+    type: SCARAB,
+    player: PLAYER_ONE,
+    angle: ANGLES.UP,
+  });
   boardBoss.writeSpace([3, 3], scarab);
 
   boardBoss.selectPiece([3, 3]);
-  boardBoss.rotatePiece([3, 3], -90);
+  boardBoss.rotatePiece([3, 3], ROTATIONS.LEFT);
 
-  expect(scarab.angle).toEqual(270);
+  expect(scarab.angle).toEqual(ANGLES.LEFT);
 });
