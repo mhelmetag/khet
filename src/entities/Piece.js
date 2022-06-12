@@ -75,11 +75,11 @@ export class Piece {
   rotate(angle) {
     // Board state update
     const [column, row] = gridFromXAndY([this.x, this.y]);
-    this.boardBoss.rotatePiece([row, column], this.angle);
+    const newAngle = this.boardBoss.rotatePiece([row, column], angle);
 
     // Internal state update
     this.selected = false;
-    this.angle = this.graphic.angle += angle;
+    this.graphic.angle = this.angle = newAngle;
 
     this.possibleMoves.destroy();
   }

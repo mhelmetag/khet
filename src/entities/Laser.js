@@ -2,6 +2,7 @@ import { GameObjects } from "phaser";
 import { SCALE } from "../constants";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
+import LaserPath from "./LaserPath";
 
 export class Laser {
   constructor(params) {
@@ -19,12 +20,22 @@ export class Laser {
 
     this.graphic.setInteractive();
     params.scene.sys.displayList.add(this.graphic);
+
+    this.laserPath = undefined;
   }
 
   click() {
+    if (this.laserPath) {
+      this.laserPath.destroy();
+    }
+
     const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
 
-    console.log("boom");
-    this.boardBoss.fireLaser([row, column]);
+    console.log("fire");
+    const [, cellsTraveled] = this.boardBoss.fireLaser([row, column]);
+    this.laserPath = new LaserPath({
+      scene: this.graphic.scene,
+      cellsTraveled,
+    });
   }
 }

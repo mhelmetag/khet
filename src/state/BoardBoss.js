@@ -114,15 +114,16 @@ export default class BoardBoss {
     }
 
     this.deselectPiece([row, column]);
+
+    return piece.angle;
   }
 
   fireLaser([row, column]) {
+    let deadPiece;
     let cellsTraveled = [];
     let direction = DIRECTIONS.UP;
 
-    console.log("postion", [row, column]);
-
-    const move = ([currentRow, currentColumn]) => {
+    const moveLaser = ([currentRow, currentColumn]) => {
       let nextPostion;
       if (direction === DIRECTIONS.UP || direction === DIRECTIONS.DOWN) {
         nextPostion = [
@@ -136,12 +137,8 @@ export default class BoardBoss {
         ];
       }
 
-      console.log("nextPostion", nextPostion);
-
       const piece = this.readSpace(nextPostion);
-
       if (piece) {
-        debugger;
         if (piece.type === PYRAMID) {
           // PYRAMID reflection
           if (piece.angle === ANGLES.UP) {
@@ -151,7 +148,8 @@ export default class BoardBoss {
               direction = DIRECTIONS.UP;
             } else {
               console.log("death", cellsTraveled, direction);
-              return cellsTraveled;
+              deadPiece = piece;
+              return;
             }
           } else if (piece.angle === ANGLES.RIGHT) {
             if (direction === DIRECTIONS.UP) {
@@ -160,16 +158,18 @@ export default class BoardBoss {
               direction = DIRECTIONS.DOWN;
             } else {
               console.log("death", cellsTraveled, direction);
-              return cellsTraveled;
+              deadPiece = piece;
+              return;
             }
           } else if (piece.angle === ANGLES.DOWN) {
             if (direction === DIRECTIONS.UP) {
               direction = DIRECTIONS.LEFT;
-            } else if (direction === DIRECTIONS.LEFT) {
+            } else if (direction === DIRECTIONS.RIGHT) {
               direction = DIRECTIONS.DOWN;
             } else {
               console.log("death", cellsTraveled, direction);
-              return cellsTraveled;
+              deadPiece = piece;
+              return;
             }
           } else if (piece.angle === ANGLES.LEFT) {
             if (direction === DIRECTIONS.RIGHT) {
@@ -178,57 +178,61 @@ export default class BoardBoss {
               direction = DIRECTIONS.LEFT;
             } else {
               console.log("death", cellsTraveled, direction);
-              return cellsTraveled;
+              deadPiece = piece;
+              return;
             }
           } else {
-            console.log(
-              "weird pyramid death",
-              cellsTraveled,
-              direction,
-              piece.angle
-            );
-            return cellsTraveled;
+            console.log("unexpected case", cellsTraveled, direction, piece);
+            return;
           }
 
           cellsTraveled.push(nextPostion);
-          move(nextPostion);
+          moveLaser(nextPostion);
         } else if (piece.type === SCARAB) {
           // SCARAB reflection
-          if (
-            piece.angle === ANGLES.UP ||
-            Math.abs(piece.angle) === ANGLES.DOWN
-          ) {
+          if (piece.angle === ANGLES.UP || piece.angle === ANGLES.DOWN) {
             direction = DIRECTIONS.LEFT;
-          } else {
+          } else if (
+            piece.angle === ANGLES.LEFT ||
+            piece.angle === ANGLES.RIGHT
+          ) {
             direction = DIRECTIONS.RIGHT;
+          } else {
+            console.log("unexpected case", cellsTraveled, direction, piece);
+            return;
           }
 
           cellsTraveled.push(nextPostion);
-          move(nextPostion);
+          moveLaser(nextPostion);
         } else if (piece.type === ANUBIS) {
           // ANUBIS absorbtion
           console.log("absorbed", cellsTraveled, direction);
-          return cellsTraveled;
+          return;
         } else if (piece.type === PHARAOH) {
           // PHARAOH game over
           console.log("game over", cellsTraveled, direction);
-          return cellsTraveled;
+          deadPiece = piece;
+          return;
         }
       } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
         // off board
         console.log("off board");
-        return cellsTraveled;
+        cellsTraveled.push(nextPostion);
+        return;
       } else if (nextPostion[1] <= 0 || nextPostion[1] >= COLUMNS) {
         // off board
         console.log("off board");
-        return cellsTraveled;
+        cellsTraveled.push(nextPostion);
+        return;
       } else {
         // continue
         cellsTraveled.push(nextPostion);
-        move(nextPostion);
+        moveLaser(nextPostion);
       }
     };
 
-    move([row, column]);
+    moveLaser([row, column]);
+
+    return [deadPiece, cellsTraveled];
   }
 }
