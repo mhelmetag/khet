@@ -24,9 +24,17 @@ export default function buildBoard(gameType = "classic") {
   switch (gameType) {
     case "classic":
       board[0][0] = new PieceBoss({ type: LASER, player: PLAYER_ONE });
-      board[0][4] = new PieceBoss({ type: ANUBIS, player: PLAYER_ONE });
+      board[0][4] = new PieceBoss({
+        type: ANUBIS,
+        player: PLAYER_ONE,
+        angle: ANGLES.DOWN,
+      });
       board[0][5] = new PieceBoss({ type: PHARAOH, player: PLAYER_ONE });
-      board[0][6] = new PieceBoss({ type: ANUBIS, player: PLAYER_ONE });
+      board[0][6] = new PieceBoss({
+        type: ANUBIS,
+        player: PLAYER_ONE,
+        angle: ANGLES.DOWN,
+      });
       board[0][7] = new PieceBoss({
         type: PYRAMID,
         player: PLAYER_ONE,
@@ -104,10 +112,18 @@ export default function buildBoard(gameType = "classic") {
         player: PLAYER_TWO,
         angle: ANGLES.LEFT,
       });
-      board[7][3] = new PieceBoss({ type: ANUBIS, player: PLAYER_TWO });
+      board[7][3] = new PieceBoss({
+        type: ANUBIS,
+        player: PLAYER_TWO,
+        angle: ANGLES.UP,
+      });
       board[7][4] = new PieceBoss({ type: PHARAOH, player: PLAYER_TWO });
       board[7][5] = new PieceBoss({ type: ANUBIS, player: PLAYER_TWO });
-      board[7][9] = new PieceBoss({ type: LASER, player: PLAYER_TWO });
+      board[7][9] = new PieceBoss({
+        type: LASER,
+        player: PLAYER_TWO,
+        angle: ANGLES.UP,
+      });
 
       break;
     default:

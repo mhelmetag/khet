@@ -228,12 +228,19 @@ export default class BoardBoss {
           moveLaser(nextPostion);
         } else if (piece.type === ANUBIS) {
           // ANUBIS absorbtion
-          // This isn't the real rules but we'll go for it for now
-          // This should be something like
-          // "when the laser direction and ANUBIS direction are different, it dies"
-          // "otherwise, it lives"
-          console.log("absorbed", cellsTraveled, direction);
-          return;
+          if (
+            (piece.angle === ANGLES.UP && direction === DIRECTIONS.DOWN) ||
+            (piece.angle === ANGLES.RIGHT && direction === DIRECTIONS.LEFT) ||
+            (piece.angle === ANGLES.DOWN && direction === DIRECTIONS.UP) ||
+            (piece.angle === ANGLES.LEFT && direction === DIRECTIONS.RIGHT)
+          ) {
+            console.log("absorbed", cellsTraveled, direction);
+            return;
+          } else {
+            console.log("death", cellsTraveled, direction);
+            deadPiece = piece;
+            return;
+          }
         } else if (piece.type === PHARAOH) {
           // PHARAOH game over
           console.log("game over", cellsTraveled, direction);
