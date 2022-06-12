@@ -95,3 +95,17 @@ it("can move scarab to where pharaoh is and switch positions", () => {
   expect(boardBoss.readSpace([3, 3]).id).toEqual(pharaoh.id);
   expect(boardBoss.readSpace([2, 3]).id).toEqual(scarab.id);
 });
+
+it("can rotate a piece", () => {
+  let boardBoss = new BoardBoss();
+
+  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE });
+  boardBoss.writeSpace([3, 3], scarab);
+
+  const initialAngle = scarab.angle;
+
+  boardBoss.selectPiece([3, 3]);
+  boardBoss.rotatePiece([3, 3], 90);
+
+  expect(scarab.angle).not.toEqual(initialAngle);
+});
