@@ -21,3 +21,7 @@ export const DIRECTIONS = {
   DOWN: "down",
   LEFT: "left",
 };
+export const ROTATIONS = {
+  RIGHT: 90,
+  LEFT: -90,
+};

@@ -1,4 +1,4 @@
-import { DIRECTIONS, ROWS } from "../constants";
+import { ANGLES, COLUMNS, DIRECTIONS, ROTATIONS, ROWS } from "../constants";
 import buildBoard from "./buildBoard";
 
 export const LASER = "laser";
@@ -105,7 +105,13 @@ export default class BoardBoss {
       throw new InvalidMoveError(`${row},${column} must be selected`);
     }
 
-    piece.angle += angle;
+    if (piece.angle === ANGLES.LEFT && angle === ROTATIONS.RIGHT) {
+      piece.angle = ANGLES.UP;
+    } else if (piece.angle === ANGLES.UP && angle === ROTATIONS.LEFT) {
+      piece.angle = ANGLES.LEFT;
+    } else {
+      piece.angle += angle;
+    }
 
     this.deselectPiece([row, column]);
   }
@@ -135,9 +141,10 @@ export default class BoardBoss {
       const piece = this.readSpace(nextPostion);
 
       if (piece) {
+        debugger;
         if (piece.type === PYRAMID) {
           // PYRAMID reflection
-          if (piece.angle === 0) {
+          if (piece.angle === ANGLES.UP) {
             if (direction === DIRECTIONS.DOWN) {
               direction = DIRECTIONS.RIGHT;
             } else if (direction === DIRECTIONS.LEFT) {
@@ -146,7 +153,7 @@ export default class BoardBoss {
               console.log("death", cellsTraveled, direction);
               return cellsTraveled;
             }
-          } else if (piece.angle === 90) {
+          } else if (piece.angle === ANGLES.RIGHT) {
             if (direction === DIRECTIONS.UP) {
               direction = DIRECTIONS.RIGHT;
             } else if (direction === DIRECTIONS.LEFT) {
@@ -155,7 +162,7 @@ export default class BoardBoss {
               console.log("death", cellsTraveled, direction);
               return cellsTraveled;
             }
-          } else if (piece.angle === 180) {
+          } else if (piece.angle === ANGLES.DOWN) {
             if (direction === DIRECTIONS.UP) {
               direction = DIRECTIONS.LEFT;
             } else if (direction === DIRECTIONS.LEFT) {
@@ -164,7 +171,7 @@ export default class BoardBoss {
               console.log("death", cellsTraveled, direction);
               return cellsTraveled;
             }
-          } else if (piece.angle === 270) {
+          } else if (piece.angle === ANGLES.LEFT) {
             if (direction === DIRECTIONS.RIGHT) {
               direction = DIRECTIONS.UP;
             } else if (direction === DIRECTIONS.DOWN) {
@@ -187,7 +194,10 @@ export default class BoardBoss {
           move(nextPostion);
         } else if (piece.type === SCARAB) {
           // SCARAB reflection
-          if (piece.angle === 0 || Math.abs(piece.angle) === 180) {
+          if (
+            piece.angle === ANGLES.UP ||
+            Math.abs(piece.angle) === ANGLES.DOWN
+          ) {
             direction = DIRECTIONS.LEFT;
           } else {
             direction = DIRECTIONS.RIGHT;
@@ -199,8 +209,16 @@ export default class BoardBoss {
           // ANUBIS absorbtion
           console.log("absorbed", cellsTraveled, direction);
           return cellsTraveled;
+        } else if (piece.type === PHARAOH) {
+          // PHARAOH game over
+          console.log("game over", cellsTraveled, direction);
+          return cellsTraveled;
         }
       } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
+        // off board
+        console.log("off board");
+        return cellsTraveled;
+      } else if (nextPostion[1] <= 0 || nextPostion[1] >= COLUMNS) {
         // off board
         console.log("off board");
         return cellsTraveled;

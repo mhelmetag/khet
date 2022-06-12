@@ -107,3 +107,31 @@ it("can rotate a piece", () => {
 
   expect(scarab.angle).toEqual(180);
 });
+
+it("can rotate a piece around cw", () => {
+  let boardBoss = new BoardBoss();
+
+  const scarab = new PieceBoss({
+    type: SCARAB,
+    player: PLAYER_ONE,
+    angle: 270,
+  });
+  boardBoss.writeSpace([3, 3], scarab);
+
+  boardBoss.selectPiece([3, 3]);
+  boardBoss.rotatePiece([3, 3], 90);
+
+  expect(scarab.angle).toEqual(0);
+});
+
+it("can rotate a piece around ccw", () => {
+  let boardBoss = new BoardBoss();
+
+  const scarab = new PieceBoss({ type: SCARAB, player: PLAYER_ONE, angle: 0 });
+  boardBoss.writeSpace([3, 3], scarab);
+
+  boardBoss.selectPiece([3, 3]);
+  boardBoss.rotatePiece([3, 3], -90);
+
+  expect(scarab.angle).toEqual(270);
+});
