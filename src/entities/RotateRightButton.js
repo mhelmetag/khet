@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser";
-import { CELL_HEIGHT, CELL_WIDTH, COLUMNS } from "../constants";
+import { CELL_HEIGHT, CELL_WIDTH, COLUMNS, ROTATIONS } from "../constants";
 import { gridFromXAndY, xAndYFromGrid } from "../helpers/boardHelpers";
 
 const getRotateRightButtonPosition = (positionOfPiece) => {
@@ -42,7 +42,7 @@ export default class RotateRightButton {
 
     this.graphic.setInteractive();
     this.graphic.on("pointerdown", () => {
-      params.piece.rotate(90);
+      params.piece.rotate(ROTATIONS.RIGHT);
     });
     params.scene.sys.displayList.add(this.graphic);
   }
