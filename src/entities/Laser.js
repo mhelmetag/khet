@@ -1,25 +1,29 @@
 import { GameObjects } from "phaser";
-import { SCALE } from "../constants";
+import { DIRECTIONS, PLAYER_ONE, SCALE } from "../constants";
 import { gridFromXAndY } from "../helpers/boardHelpers";
 import { pieceImageSource } from "../helpers/imageHelpers";
 import LaserPath from "./LaserPath";
 
 export class Laser {
   constructor(params) {
+    this.scene = params.scene;
     this.boardBoss = params.boardBoss;
+    this.player = params.player;
+    this.x = params.x;
+    this.y = params.y;
 
     this.graphic = new GameObjects.Image(
-      params.scene,
-      params.x,
-      params.y,
-      pieceImageSource(params.player),
+      this.scene,
+      this.x,
+      this.y,
+      pieceImageSource(this.player),
       4
     );
 
     this.graphic.scale = SCALE;
 
     this.graphic.setInteractive();
-    params.scene.sys.displayList.add(this.graphic);
+    this.scene.sys.displayList.add(this.graphic);
 
     this.laserPath = undefined;
   }
@@ -30,10 +34,15 @@ export class Laser {
     }
 
     const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
+    const firingDirection =
+      this.player === PLAYER_ONE ? DIRECTIONS.DOWN : DIRECTIONS.UP;
 
-    const [, cellsTraveled] = this.boardBoss.fireLaser([row, column]);
+    const [, cellsTraveled] = this.boardBoss.fireLaser(
+      [row, column],
+      firingDirection
+    );
     this.laserPath = new LaserPath({
-      scene: this.graphic.scene,
+      scene: this.scene,
       cellsTraveled,
     });
   }
