@@ -1,6 +1,5 @@
 import { ANGLES, COLUMNS, DIRECTIONS, ROTATIONS, ROWS } from "../constants";
 import buildBoard from "./buildBoard";
-import ReflectionResolver from "./ReflectionResolver";
 
 export const LASER = "laser";
 export const PHARAOH = "pharaoh";
