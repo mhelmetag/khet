@@ -1,5 +1,6 @@
 import { ANGLES, COLUMNS, DIRECTIONS, ROTATIONS, ROWS } from "../constants";
 import buildBoard from "./buildBoard";
+import ReflectionResolver from "./ReflectionResolver";
 
 export const LASER = "laser";
 export const PHARAOH = "pharaoh";
@@ -23,8 +24,9 @@ export class InvalidMoveError extends Error {
 }
 
 export default class BoardBoss {
-  constructor(gameType = "classic") {
+  constructor(scene = null, gameType = "classic") {
     this.selectedPieceId = null;
+    this.scene = scene;
     this.board = new buildBoard(gameType);
   }
 
@@ -118,6 +120,16 @@ export default class BoardBoss {
     return piece.angle;
   }
 
+  removePiece([row, column]) {
+    const piece = this.readSpace([row, column]);
+
+    if (piece === null) {
+      throw new InvalidSelectionError(`${row},${column} is empty`);
+    }
+
+    this.writeSpace([row, column], null);
+  }
+
   fireLaser([row, column], direction = DIRECTIONS.UP) {
     let deadPiece;
     let cellsTraveled = [[row, column]];
@@ -140,13 +152,13 @@ export default class BoardBoss {
       }
 
       if (nextPostion[0] < 0 || nextPostion[0] > ROWS - 1) {
-        // off board y
+        // Off board y
         console.log("off board y");
 
         return;
       }
       if (nextPostion[1] < 0 || nextPostion[1] > COLUMNS - 1) {
-        // off board x
+        // Off board x
         console.log("off board x");
 
         return;
@@ -257,16 +269,6 @@ export default class BoardBoss {
           deadPiece = piece;
           return;
         }
-      } else if (nextPostion[0] < 0 || nextPostion[0] >= ROWS) {
-        // off board y
-        console.log("off board y");
-
-        return;
-      } else if (nextPostion[1] < 0 || nextPostion[1] >= COLUMNS) {
-        // off board x
-        console.log("off board x");
-
-        return;
       } else {
         // nothing
         // continue

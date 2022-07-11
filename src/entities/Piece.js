@@ -11,6 +11,7 @@ export class Piece {
     this.x = params.x;
     this.y = params.y;
     this.angle = params.angle || ANGLES.UP;
+    this.id = params.id;
 
     this.pieceImageSource = pieceImageSource(this.player);
 

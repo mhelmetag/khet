@@ -24,26 +24,45 @@ export class Laser {
 
     this.graphic.setInteractive();
     this.scene.sys.displayList.add(this.graphic);
-
-    this.laserPath = undefined;
   }
 
   click() {
-    if (this.laserPath) {
-      this.laserPath.destroy();
+    if (this.scene.laserPath) {
+      this.scene.laserPath.destroy();
     }
 
     const [column, row] = gridFromXAndY([this.graphic.x, this.graphic.y]);
     const firingDirection =
       this.player === PLAYER_ONE ? DIRECTIONS.DOWN : DIRECTIONS.UP;
 
-    const [, cellsTraveled] = this.boardBoss.fireLaser(
+    const [deadPiece, cellsTraveled] = this.boardBoss.fireLaser(
       [row, column],
       firingDirection
     );
-    this.laserPath = new LaserPath({
+    this.scene.laserPath = new LaserPath({
       scene: this.scene,
       cellsTraveled,
     });
+
+    window.setTimeout(() => {
+      this.scene.laserPath.destroy();
+    }, "2000");
+
+    if (deadPiece) {
+      window.setTimeout(() => {
+        // piece is the graphic and deadPiece is the piece state
+        const deadPieceGraphic = this.scene.pieces.find(
+          (p) => p.id === deadPiece.id
+        );
+        if (deadPieceGraphic) {
+          const [column, row] = gridFromXAndY([
+            deadPieceGraphic.x,
+            deadPieceGraphic.y,
+          ]);
+          this.boardBoss.removePiece([row, column]);
+          deadPieceGraphic.graphic.destroy();
+        }
+      }, "2000");
+    }
   }
 }
