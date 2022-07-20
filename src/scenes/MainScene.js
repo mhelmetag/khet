@@ -18,6 +18,9 @@ import { Laser } from "../entities/Laser";
 export class MainScene extends Phaser.Scene {
   constructor(config) {
     super({ ...config, key: "MainScene" });
+
+    this.laserPath = null;
+    this.pieces = [];
   }
 
   preload() {
@@ -47,6 +50,7 @@ export class MainScene extends Phaser.Scene {
         y: y,
         player: piece.player,
         angle: piece.angle,
+        id: piece.id,
       };
 
       switch (piece.type) {
@@ -67,7 +71,6 @@ export class MainScene extends Phaser.Scene {
       }
     };
 
-    this.pieces = [];
     this.boardBoss.board.forEach((row, rowIndex) => {
       row.forEach((pieceState, columnIndex) => {
         if (pieceState !== null) {

@@ -23,8 +23,9 @@ export class InvalidMoveError extends Error {
 }
 
 export default class BoardBoss {
-  constructor(gameType = "classic") {
+  constructor(scene = null, gameType = "classic") {
     this.selectedPieceId = null;
+    this.scene = scene;
     this.board = new buildBoard(gameType);
   }
 
@@ -118,26 +119,53 @@ export default class BoardBoss {
     return piece.angle;
   }
 
-  fireLaser([row, column]) {
+  removePiece([row, column]) {
+    const piece = this.readSpace([row, column]);
+
+    if (piece === null) {
+      throw new InvalidSelectionError(`${row},${column} is empty`);
+    }
+
+    this.writeSpace([row, column], null);
+  }
+
+  fireLaser([row, column], direction = DIRECTIONS.UP) {
     let deadPiece;
     let cellsTraveled = [[row, column]];
-    let direction = DIRECTIONS.UP;
 
     const moveLaser = ([currentRow, currentColumn]) => {
       let nextPostion;
+
       if (direction === DIRECTIONS.UP || direction === DIRECTIONS.DOWN) {
+        // Starting at 0,0 and going "down" would increase the row number
         nextPostion = [
-          currentRow - (direction === DIRECTIONS.UP ? 1 : -1),
+          currentRow + (direction === DIRECTIONS.DOWN ? 1 : -1),
           currentColumn,
         ];
       } else {
+        // Starting at 0,0 and going "right" would increase the column number
         nextPostion = [
           currentRow,
-          currentColumn - (direction === DIRECTIONS.LEFT ? 1 : -1),
+          currentColumn + (direction === DIRECTIONS.RIGHT ? 1 : -1),
         ];
       }
 
+      if (nextPostion[0] < 0 || nextPostion[0] > ROWS - 1) {
+        // Off board y
+        console.log("off board y");
+
+        return;
+      }
+      if (nextPostion[1] < 0 || nextPostion[1] > COLUMNS - 1) {
+        // Off board x
+        console.log("off board x");
+
+        return;
+      }
+
       cellsTraveled.push(nextPostion);
+
+      console.log(cellsTraveled);
 
       const piece = this.readSpace(nextPostion);
       if (piece) {
@@ -240,19 +268,18 @@ export default class BoardBoss {
           deadPiece = piece;
           return;
         }
-      } else if (nextPostion[0] <= 0 || nextPostion[0] >= ROWS) {
-        // off board
-        return;
-      } else if (nextPostion[1] <= 0 || nextPostion[1] >= COLUMNS) {
-        // off board
-        return;
       } else {
+        // nothing
         // continue
+        console.log("continue");
+
         moveLaser(nextPostion);
       }
     };
 
     moveLaser([row, column]);
+
+    console.log([deadPiece, cellsTraveled]);
 
     return [deadPiece, cellsTraveled];
   }
